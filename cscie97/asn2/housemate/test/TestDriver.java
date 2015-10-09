@@ -15,9 +15,11 @@ import cscie97.asn2.housemate.model.HouseMateCLI;
  * 
  * @author ying
  */
+
+
 public class TestDriver {
 	public static void main(String[] args) {
-		String inputName = args[0];
+		String inputName = "./resource/"+args[0];
 		try {
 			HouseMateCLI.importConfigFile(inputName);
 		} catch (FileNotFoundException e) {
