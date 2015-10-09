@@ -1,0 +1,193 @@
+#	define a new house instance with identifier house1
+define house house1
+define house house2
+define house house3
+
+# 	define a new room instance and attach to a house
+define room kitchen1 floor 1 type kitchen house house1
+define room dining_room1 floor 1 type dining_room  house house1
+define room closet1 floor 1 type closet  house house1
+define room bed_room1 floor 2 type bedroom house house1
+define room bed_room2 floor 2 type bedroom house house1
+define room bath_room1 floor 2 type bathroom house house1
+
+define room kitchen1 floor 1 type kitchen house house2
+define room dining_room1 floor 1 type dining_room  house house2
+define room closet1 floor 1 type closet  house house2
+define room bed_room1 floor 2 type bedroom house house2 
+define room bed_room2 floor 2 type bedroom house house2
+define room bath_room1 floor 2 type bathroom house house2
+	
+#	define a new occupant
+define occupant joe_smith type adult
+define occupant jill_smith type adult
+define occupant Rover type pet  
+
+define occupant bill_roberts type adult
+define occupant mary_roberts type adult
+define occupant Fuzz type pet  
+
+#	add joe_smith as an occupant to house1
+add occupant joe_smith to_house house1
+add occupant jill_smith to_house house1
+add occupant Rover to_house house1
+
+add occupant bill_roberts to_house house2
+add occupant mary_roberts to_house house2
+add occupant Fuzz to_house house2
+
+#	create a new sensor in a room
+define sensor smoke_detector1 type smoke_detector room house1:kitchen1
+define sensor smoke_detector2 type smoke_detector room house1:dining_room1
+define sensor smoke_detector3 type smoke_detector room house1:bed_room1
+define sensor smoke_detector4 type smoke_detector room house1:bed_room2
+define sensor smoke_detector5 type smoke_detector room house1:bath_room1
+
+define sensor camera1 type camera room house1:kitchen1
+define sensor camera2 type camera room house1:dining_room1
+define sensor camera3 type camera room house1:bed_room1
+define sensor camera4 type camera room house1:bed_room2
+define sensor camera5 type camera room house1:bath_room1
+
+define sensor ava1 type ava room house1:kitchen1
+define sensor ava2 type ava room house1:dining_room1
+define sensor ava3 type ava room house1:bed_room1
+define sensor ava4 type ava room house1:bed_room2
+define sensor ava5 type ava room house1:bath_room1
+
+define sensor smoke_detector1 type smoke_detector room house2:kitchen1
+define sensor smoke_detector2 type smoke_detector room house2:dining_room1
+define sensor smoke_detector3 type smoke_detector room house2:bed_room1
+define sensor smoke_detector4 type smoke_detector room house2:bed_room2
+define sensor smoke_detector5 type smoke_detector room house2:bath_room1
+
+define sensor camera1 type camera room house2:kitchen1
+define sensor camera2 type camera room house2:dining_room1
+define sensor camera3 type camera room house2:bed_room1
+define sensor camera4 type camera room house2:bed_room2
+define sensor camera5 type camera room house2:bath_room1
+
+define sensor ava1 type ava room house2:kitchen1
+define sensor ava2 type ava room house2:dining_room1
+define sensor ava3 type ava room house2:bed_room1
+define sensor ava4 type ava room house2:bed_room2
+define sensor ava5 type ava room house2:bath_room1
+
+#	create a new appliance instance
+define appliance oven1 type oven room house1:kitchen1
+define appliance tv1 type TV room house1:bed_room1
+
+define appliance thermastat1 type thermastat room house1:kitchen1
+define appliance thermastat2 type thermastat room house1:dining_room1
+define appliance thermastat3 type thermastat room house1:bed_room1
+define appliance thermastat4 type thermastat room house1:bed_room2
+define appliance thermastat5 type thermastat room house1:bath_room1
+
+define appliance light1 type light room house1:kitchen1
+define appliance light2 type light room house1:dining_room1
+define appliance light3 type light room house1:bed_room1
+define appliance light4 type light room house1:bed_room2
+define appliance light5 type light room house1:bath_room1
+
+define appliance door1 type door room house1:kitchen1
+define appliance door2 type door room house1:dining_room1
+define appliance door3 type door room house1:bed_room1
+define appliance door4 type door room house1:bed_room2
+define appliance door5 type door room house1:bath_room1
+
+define appliance window1 type window room house1:kitchen1
+define appliance window2 type window room house1:dining_room1
+define appliance window3 type window room house1:bed_room1
+define appliance window4 type window room house1:bed_room2
+define appliance window5 type window room house1:bath_room1
+
+set appliance house1:bed_room1:door3 status mode OPEN 
+set appliance house1:bed_room1:light3 status mode ON 
+set appliance house1:bed_room1:window3 status mode OPEN 
+
+define appliance oven1 type oven room house2:kitchen1
+define appliance tv1 type TV room house2:bed_room1
+
+define appliance thermastat1 type thermastat room house2:kitchen1
+define appliance thermastat2 type thermastat room house2:dining_room1
+define appliance thermastat3 type thermastat room house2:bed_room1
+define appliance thermastat4 type thermastat room house2:bed_room2
+define appliance thermastat5 type thermastat room house2:bath_room1
+
+define appliance light1 type light room house2:kitchen1
+define appliance light2 type light room house2:dining_room1
+define appliance light3 type light room house2:bed_room1
+define appliance light4 type light room house2:bed_room2
+define appliance light5 type light room house2:bath_room1
+
+define appliance door1 type door room house2:kitchen1
+define appliance door2 type door room house2:dining_room1
+define appliance door3 type door room house2:bed_room1
+define appliance door4 type door room house2:bed_room2
+define appliance door5 type door room house2:bath_room1
+
+
+define appliance window1 type window room house2:kitchen1
+define appliance window2 type window room house2:dining_room1
+define appliance window3 type window room house2:bed_room1
+define appliance window4 type window room house2:bed_room2
+define appliance window5 type window room house2:bath_room1
+
+set appliance house2:bed_room1:door3 status mode CLOSED 
+set appliance house2:bed_room1:light3 status mode ON 
+set appliance house2:bed_room1:window3 status mode CLOSED 
+
+#	turn the oven on and set the temperature to 350 degrees
+set  appliance house1:kitchen1:oven1 status power value ON
+set  appliance house1:kitchen1:oven1 status temperature value 350
+set  appliance house1:bed_room1:tv1 status power value on 
+set  appliance house1:bed_room1:tv1 status channel value PBS 
+
+set  appliance house2:kitchen1:oven1 status power value ON
+set  appliance house2:kitchen1:oven1 status temperature value 400 
+set  appliance house2:bed_room1:tv1 status power value on 
+set  appliance house2:bed_room1:tv1 status channel value CNN 
+
+add occupant joe_smith to_house house1
+add occupant jill_smith to_house house1
+add occupant Rover to_house house1
+
+add occupant bill_roberts to_house house2
+add occupant mary_roberts to_house house2
+add occupant Fuzz to_house house2
+
+# set smoke detector status to OK
+set sensor house1:room1:smoke_detector1 status MODE value OK
+# camera1 detects Joe Smith entering room 1 
+set sensor house1:dining_room1:camera1 status OCCUPANT_DETECTED value joe_smith
+# camera 1 detects Rover leaving room1
+set sensor house1:dining_room1:camera1 status OCCUPANT_LEAVING value "Rover"
+# Ava1 hears Joe Smith give command "open door"
+set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'open door'"
+# Ava1 hears Joe Smith ask question "where is Rover?"
+set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'where is Rover?'"
+
+	 
+#	show the temperature of the oven
+show  appliance house1:kitchen1:oven1 status temperature  
+show  appliance house2:kitchen1:oven1 status temperature  
+	
+# 	show all state for the oven  
+show  appliance house1:kitchen1:oven1  
+show  appliance house1:kitchen1:oven2  
+	 
+# 	show all state for the smoke detector  
+show  sensor house1:kitchen1:smoke_detector1  
+show  sensor house2:kitchen1:smoke_detector1  
+	 
+# 	show the configuration for the house1
+show configuration house house1
+show configuration house house2
+
+#	show configuration of the kitchen1
+show configuration room house1:kitchen1
+show configuration room house2:kitchen1
+	 
+#	show configurations for all houses
+show configuration
+

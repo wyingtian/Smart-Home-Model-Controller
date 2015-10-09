@@ -1,0 +1,19 @@
+#Pleaser refer to “ExceptionHandlilng.pdf” under docs directory for the detailed exception #demonstration for this sample run.
+
+
+#define house with the same namedefine house house1
+define house house1 house1 
+#define house without namedefine house
+# define room when house doesn't existdefine room room1 floor 1 type kitchen house house3 # sensor exceptions#1. Define sensor without loacation
+define room room1 floor 1 type kitchen house house1 
+define sensor smoke_detector1 type smoke_detector room 
+#2.Define sensor without room being defineddefine sensor smoke_detector1 type smoke_detector room house1:room2
+#3.show sensor but sensor not defined yetdefine sensor smoke_detector1 type smoke_detector room house1:room1show sensor house1:room1:smoke_detector1 status 
+# occupant exception# 1.add occupant without define occupant firstadd occupant joe_smith to_house house1 
+#2. Add occupant without existing houseadd occupant joe_smith to_house house4
+
+# appliance status wrong input.
+define appliance light1 type light room house1:room1 set appliance house1:room1:light1 status temperature value 70define appliance oven1 type oven room house1:room1 set appliance house1:room1:oven1 status temperature value 70
+# invalid appliance value input
+define appliance thermostat1 type thermostat room house1:room1 set appliance house1:room1:thermostat1 status temperature value 1000 
+# command is too long or too shortset appliance house1 room1 oven1 status temperature value 70 90
