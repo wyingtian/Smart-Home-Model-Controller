@@ -20,7 +20,7 @@ public class QueryEngine {
 	 * 
 	 * @param query
 	 */
-	public static void executeQuery(String query) {
+	public  void executeQuery(String query) {
 
 		// to separate the results of each query.
 		System.out.println("************************");
@@ -74,7 +74,7 @@ public class QueryEngine {
 	 * @param input
 	 * @return
 	 */
-	public static String stdOutput(String input) {
+	public  String stdOutput(String input) {
 		String[] temp = input.split(" ");
 		String sub = temp[0].substring(0, 1).toUpperCase()
 				+ temp[0].substring(1);
@@ -90,7 +90,7 @@ public class QueryEngine {
 	 * @param fileName
 	 * @throws QueryEngineException
 	 */
-	public static void executeQueryFile(String fileName)
+	public  void executeQueryFile(String fileName)
 			throws QueryEngineException {
 
 		BufferedReader br = null;

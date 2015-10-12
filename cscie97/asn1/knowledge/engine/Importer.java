@@ -15,22 +15,61 @@ import java.util.List;
  *
  */
 public class Importer {
+
+
+	 List<Triple> triple_list = new ArrayList<Triple>();
+
+
+	public  void removeTriple(String item ){}
+	/**
+	 *
+	 * @param modifiedLine
+	 */
+	public   void importTripleLine(String modifiedLine){
+		// split by space
+		String[] str_array = modifiedLine.split(" ");
+
+
+
+		try {
+			if (modifiedLine.length() > 0 && str_array.length == 3) {
+				Node sub = KnowledgeGraph.getInstance().getNode(
+						str_array[0]);
+				Predicate pre = KnowledgeGraph.getInstance()
+						.getPredicate(str_array[1]);
+				Node obj = KnowledgeGraph.getInstance().getNode(
+						str_array[2]);
+				Triple tri = KnowledgeGraph.getInstance().getTriple(
+						sub, pre, obj);
+				triple_list.add(tri);
+
+				// call graph's import method to import triples
+
+				KnowledgeGraph.getInstance().importTriples(triple_list);
+			} else
+				throw new ImportException(modifiedLine);
+		} catch (ImportException e) {
+
+		}
+	}
+
 	/**
 	 * This method get the input file name from command line It import the data
 	 * to knowledge graph If the the input has an empty line, it will show there
 	 * is an empty line If the input has more than three part, it will notify
 	 * the user and then keep processing If the input has other error it will
 	 * throw the exception and stop the program.
-	 * 
+	 *
+	 *
 	 * @param fileName
 	 * @throws ImportException
 	 */
-	public static void importTripleFile(String fileName) throws ImportException {
+	public  void importTripleFile(String fileName) throws ImportException {
 
-		BufferedReader br = null;
 		String line;
 		String modifiedLine;
-		List<Triple> triple_list = new ArrayList<Triple>();
+		BufferedReader br = null;
+
 		try {
 			FileReader fr = new FileReader(fileName);
 			br = new BufferedReader(fr);
@@ -38,10 +77,6 @@ public class Importer {
 				// replace "." with whitespace and then get rid of all the
 				// whitespace in the end of the line.
 				modifiedLine = line.replace(".", " ").trim();
-
-				// split by space
-				String[] str_array = modifiedLine.split(" ");
-
 				// empty line consider as not major problem so continue
 				if (modifiedLine.length() == 0) {
 					System.out.println("************************");
@@ -50,28 +85,8 @@ public class Importer {
 
 					continue;
 				}
-
-				try {
-					if (modifiedLine.length() > 0 && str_array.length == 3) {
-						Node sub = KnowledgeGraph.getInstance().getNode(
-								str_array[0]);
-						Predicate pre = KnowledgeGraph.getInstance()
-								.getPredicate(str_array[1]);
-						Node obj = KnowledgeGraph.getInstance().getNode(
-								str_array[2]);
-						Triple tri = KnowledgeGraph.getInstance().getTriple(
-								sub, pre, obj);
-						triple_list.add(tri);
-
-					} else
-						throw new ImportException(line);
-				} catch (ImportException e) {
-							
-				}
+				importTripleLine(modifiedLine);
 			}
-			// call graph's import method to import triples
-
-			KnowledgeGraph.getInstance().importTriples(triple_list);
 
 		} catch (FileNotFoundException e) {
 			System.out.println("!!  File not found: " + fileName);

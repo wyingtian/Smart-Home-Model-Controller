@@ -155,10 +155,12 @@ public class KnowledgeGraph {
 			return predicate;
 		}
 	}
+
 	/**
-	 * This method get the triple from the node map
-	 * 
-	 * @param identifier
+	 *
+	 * @param sub
+	 * @param pre
+	 * @param obj
 	 * @return
 	 */
 	public Triple getTriple(Node sub, Predicate pre, Node obj) {

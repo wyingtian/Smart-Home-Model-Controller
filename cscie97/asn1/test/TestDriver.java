@@ -17,9 +17,10 @@ public class TestDriver {
 	 */
 
 	public static void main(String[] args) {
-
+		Importer importer = new Importer();
+		QueryEngine queryEngine = new QueryEngine();
 		try {
-			Importer.importTripleFile("./resource/"+args[0]);
+			importer.importTripleFile("./resource/"+args[0]);
 		} catch (ImportException e) {
 			System.out.println("illegal input!");
 			System.out.println(e);
@@ -27,7 +28,7 @@ public class TestDriver {
 		}
 
 		try {
-			QueryEngine.executeQueryFile("./resource/"+ args[1]);
+			queryEngine.executeQueryFile("./resource/"+ args[1]);
 		} catch (QueryEngineException e) {
 			System.out.println("illegal query!");
 			System.out.println(e);
