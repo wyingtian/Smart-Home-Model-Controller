@@ -1,4 +1,8 @@
 package cscie97.asn3.housemate.model;
+import cscie97.asn1.knowledge.engine.Importer;
+import cscie97.asn1.knowledge.engine.KnowledgeGraph;
+import cscie97.asn1.knowledge.engine.QueryEngine;
+import cscie97.asn3.housemate.controller.command.*;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 import cscie97.asn3.housemate.model.IOTDevices.Ava;
 import cscie97.asn3.housemate.model.IOTDevices.Camera;
@@ -22,9 +26,7 @@ import cscie97.asn3.housemate.model.exception.HouseNotFoundException;
 import cscie97.asn3.housemate.model.exception.RoomNotFoundException;
 import cscie97.asn3.housemate.model.exception.SensorNotFoundException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 
 /**
@@ -36,9 +38,13 @@ import java.util.Scanner;
 public class HouseMateModel implements ServiceInterface {
 
 	private static final ServiceInterface MODEL = new HouseMateModel();
+	KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
+	Importer importer = new Importer();
+	QueryEngine queryEngine = new QueryEngine();
+
+
 	HashMap<String, House> homeMap ;
 	HashMap<String, Occupant> allOccupantMap;
-
 	public HashMap<String, House> getHomeMap() {
 		return homeMap;
 	}
@@ -47,6 +53,15 @@ public class HouseMateModel implements ServiceInterface {
 		return allOccupantMap;
 	}
 
+	public  KnowledgeGraph getKnowledgeGraph(){
+		return this.knowledgeGraph;
+	}
+	public  Importer getImporter(){
+		return this.importer;
+	}
+	public  QueryEngine getQueryEngine(){
+		return this.queryEngine;
+	}
 	private HouseMateModel() {
 		homeMap = new HashMap<String, House>();
 		allOccupantMap = new HashMap<String, Occupant>();
@@ -554,6 +569,88 @@ public class HouseMateModel implements ServiceInterface {
 		for (String house : homeMap.keySet()) {
 			homeMap.get(house).showOccupInHouse();
 			homeMap.get(house).showRoomInHouse();
+		}
+	}
+
+
+	/**
+	 *
+	 * @param location location is in the form of house:room
+	 * @param type      type is the appliance type String
+	 * @return  a list of matching appliance.
+	 */
+	public List<Appliance> findApplianceByType(String location, String type, String auth_token){
+		List<Appliance> appList = new ArrayList<Appliance>();
+		Room theRoom =findRoom(location,auth_token);
+		for(Appliance app: theRoom.getApplianceMap().values()){
+			if(app.getType().equals(type)){
+				appList.add(app);
+			}
+		}
+		return appList;
+	}
+
+	public void openDoors(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no doors in this room");
+			return;
+		}
+		for(Appliance app: list){
+			DoorOpenCommand com = new DoorOpenCommand((Door)app);
+			com.execute();
+		}
+	}
+	public void turnOnAllLights(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no lights in this room");
+			return;
+		}
+		for(Appliance app: list){
+			LightOnCommand com = new LightOnCommand((Light)app);
+			com.execute();
+		}
+	}
+	public void turnOffAllLights(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no lights in this room");
+			return;
+		}
+		for(Appliance app: list){
+			LightOffCommand com = new LightOffCommand((Light)app);
+			com.execute();
+		}
+	}
+	public void dimmerAllLights(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no lights in this room");
+			return;
+		}
+		for(Appliance app: list){
+			LightDimmerCommand com = new LightDimmerCommand((Light)app);
+			com.execute();
+			app.showStatus("intensity");
+		}
+	}
+	public void coolerThermostat(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no thermostat in this room");
+			return;
+		}
+		for(Appliance app: list){
+			ThermostatCoolerCommand com = new ThermostatCoolerCommand((Thermostat)app);
+			com.execute();
+			app.showStatus("temperature");
+		}
+	}
+	public void warmerThermostat(List<Appliance> list){
+		if(list.isEmpty()){
+			System.out.println("no thermostat in this room");
+			return;
+		}
+		for(Appliance app: list){
+			ThermostatWarmerCommand com = new ThermostatWarmerCommand((Thermostat)app);
+			com.execute();
+			app.showStatus("temperature");
 		}
 	}
 }

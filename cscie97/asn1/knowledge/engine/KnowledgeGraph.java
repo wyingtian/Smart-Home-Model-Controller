@@ -47,9 +47,9 @@ public class KnowledgeGraph {
 		if(tri == null){
 			return;
 		}
-		Node obj = nodeMap.get(str_array[2]);
-		Node sub = nodeMap.get(str_array[0]);
-		Predicate pre = predicateMap.get(str_array[1]);
+//		Node obj = nodeMap.get(str_array[2]);
+//		Node sub = nodeMap.get(str_array[0]);
+//		Predicate pre = predicateMap.get(str_array[1]);
 		List<String> query_list = generateAllQuerys(tri);
 
 		for (String str : query_list) {
@@ -60,10 +60,10 @@ public class KnowledgeGraph {
 
 			}
 		}
-		tripleMap.remove(triple);
-		nodeMap.remove(str_array[2]);
-		nodeMap.remove(str_array[0]);
-		predicateMap.remove(str_array[1]);
+//		tripleMap.remove(triple);
+//		nodeMap.remove(str_array[2]);
+//		nodeMap.remove(str_array[0]);
+//		predicateMap.remove(str_array[1]);
 	}
 	/**
 	 * The importTriples() method supports importing a set of Triple instances

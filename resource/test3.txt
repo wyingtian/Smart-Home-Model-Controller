@@ -30,10 +30,10 @@ define appliance thermostat2 type thermostat room house1:dining_room1
 define appliance thermostat3 type thermostat room house1:kitchen1
 define appliance thermostat4 type thermostat room house1:kitchen1
 set sensor house1:kitchen1:camera1 status OCCUPANT_DETECTED value joe_smith
-set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'joe_smith is ?'"
+set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'where is joe_smith'"
 set sensor house1:kitchen1:camera1 status OCCUPANT_LEAVING value joe_smith
 set sensor house1:dining_room1:camera1 status OCCUPANT_DETECTED value joe_smith
-set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'joe_smith is ?'"
+set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'where is joe_smith'"
 set sensor house1:dining_room1:camera1 status OCCUPANT_INACTIVE value joe_smith
 set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'joe_smith is ?'"
 set sensor house1:dining_room1:camera1 status OCCUPANT_ACTIVE value joe_smith

@@ -1,20 +1,28 @@
 package cscie97.asn3.housemate.model;
 
+import cscie97.asn1.knowledge.engine.Importer;
+import cscie97.asn1.knowledge.engine.KnowledgeGraph;
+import cscie97.asn1.knowledge.engine.QueryEngine;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 import cscie97.asn3.housemate.model.IOTDevices.Sensor;
 import cscie97.asn3.housemate.model.Occupants.Occupant;
 
 import java.util.HashMap;
+import java.util.List;
 
 public interface ServiceInterface {
 	public HashMap<String, Occupant> getAllOccupantMap();
 	public HashMap<String, House> getHomeMap();
+
 	/**
 	 * This method create a house object
 	 * add added the house object to HouseMateModel allHouseMap.
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control  
 	 */
+	public Importer getImporter();
+	public QueryEngine getQueryEngine();
+	public KnowledgeGraph getKnowledgeGraph();
 	public abstract void defineHouse(String houseName, String auth_token);
 
 	/**
@@ -122,5 +130,11 @@ public interface ServiceInterface {
 	 * @return
 	 */
 	public abstract Appliance findAppliance(String applianceName,String auth_toekn);
-
+	public abstract List<Appliance> findApplianceByType(String location, String type, String auth_token);
+	public abstract void openDoors(List<Appliance> list);
+	public abstract void turnOnAllLights(List<Appliance> list);
+	public abstract void turnOffAllLights(List<Appliance> list);
+	public abstract void dimmerAllLights(List<Appliance> list);
+	public abstract void coolerThermostat(List<Appliance> list);
+	public abstract void warmerThermostat(List<Appliance> list);
 }
