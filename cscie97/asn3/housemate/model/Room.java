@@ -14,6 +14,19 @@ import cscie97.asn3.housemate.model.IOTDevices.Sensor;
 public class Room  {
 	private String type;
 	private String floor;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public House getLocation() {
+		return location;
+	}
+
 	private String name;
 	private House location;
 	HashMap<String,Sensor> sensorMap ;
@@ -27,6 +40,11 @@ public class Room  {
 		sensorMap = new HashMap<String,Sensor>();
 		applianceMap = new HashMap<String,Appliance>();
 	}
+
+	public HashMap<String, Appliance> getApplianceMap() {
+		return applianceMap;
+	}
+
 	/**
 	 * check if the sensor exsist in the room
 	 * @param String sensor 

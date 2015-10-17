@@ -17,10 +17,11 @@ import java.util.List;
 public class Importer {
 
 
-	 List<Triple> triple_list = new ArrayList<Triple>();
 
 
-	public  void removeTriple(String item ){}
+	List<Triple> triple_list ;
+
+
 	/**
 	 *
 	 * @param modifiedLine
@@ -29,7 +30,7 @@ public class Importer {
 		// split by space
 		String[] str_array = modifiedLine.split(" ");
 
-
+		List<Triple> triple_list = new ArrayList<>();
 
 		try {
 			if (modifiedLine.length() > 0 && str_array.length == 3) {

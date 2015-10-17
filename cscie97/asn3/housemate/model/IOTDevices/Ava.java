@@ -7,6 +7,8 @@ public class Ava extends Sensor{
 	public Ava(String name, String type, Room location) {
 		super(name, type, location);
 	}
+
+
 	@Override
 	public String showInfo(){
 		return "The name of the "+ type + "is "+name +", It is in Room "+ location.roomInfo();
@@ -14,7 +16,6 @@ public class Ava extends Sensor{
 
 	@Override
 	public String showStatus() {
-		
 		return "Ava is listening for command";
 	}
 }

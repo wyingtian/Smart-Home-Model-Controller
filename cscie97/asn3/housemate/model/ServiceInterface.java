@@ -15,35 +15,36 @@ public interface ServiceInterface {
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control  
 	 */
-	public abstract void defineHouse(String[] tokens, String auth_token);
+	public abstract void defineHouse(String houseName, String auth_token);
 
 	/**
 	 * Create room object
 	 * @param tokens
 	 * @param auth_token
 	 */
-	public abstract void defineRoom(String[] tokens, String auth_token);
+	public abstract void defineRoom(String roomName, String floor,  String type, String houseName, String auth_token);
 
 	/**
 	 * create occupant object
 	* @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control 
 	 */
-	public abstract void defineOccupant(String[] tokens, String auth_token);
+	public abstract void defineOccupant(String occuName,String occuType, String auth_token);
 	/**
 	 * add occupant to house
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control 
 	 */
-	public abstract void addOccupant2House(String[] tokens, String auth_token);
+	public abstract void addOccupant2House(String occName,String houseName, String auth_token);
 
 	/**
 	 * create sensor object
-	 * Note: sensor is an abstract class, it create its subclass based on input
+	 * Note: sensor is an abstract class, it create its subclass based on input,
+	 * roomName is in the form of house:room1;
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control 
 	 */
-	public abstract void defineSensor(String[] tokens, String auth_token);
+	public abstract void defineSensor(String sensorName,String sensorType,String roomName, String auth_token);
 	
 	/**
 	 *create appliance object
@@ -51,35 +52,39 @@ public interface ServiceInterface {
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control
 	 */
-	public abstract void defineAppliance(String[] tokens, String auth_token);
+	public abstract void defineAppliance(String appName,String appType,String roomName, String auth_token);
 
-	/**
-	 * set the status of the sensor or appliance 
-	 * @param tokens the String[] is the tokenized command
-	 * @param auth_token for access control
-	 */
-	public abstract void setSenOrApp(String[] tokens, String auth_token);
+//	/**
+//	 * set the status of the sensor or appliance
+//	 * @param tokens the String[] is the tokenized command
+//	 * @param auth_token for access control
+//	 */
+//	public abstract void setSenOrApp(String[] tokens, String auth_token);
 
 	/**
 	 * show the status of the sensor or appliance 
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control
 	 */
-	public abstract void showSenOrApp(String[] tokens, String auth_token);
+	public abstract void showSensor(String sensorName, String auth_token);
 	/**
 	 * show all the configuration of the house
 	 * including all the rooms and devices and their status
 	 * @param tokens
 	 * @param auth_token
 	 */
-	public abstract void showConfigHouse(String[] tokens, String auth_token);
+
+	public abstract void showApplianceStatus(String appName,String statusName,String auth_token);
+	public abstract void showAllApplianceStatus(String appName,String auth_token);
+	public abstract void showConfigHouse(String houseName, String auth_token);
+	public abstract void setApplianceStatus(String appName,String statusName,String value,String auth_token);
 	/**
 	 * show all the configuration of the room
 	 * including all the  devices and their status
 	 * @param tokens
 	 * @param auth_token
 	 */
-	public abstract void showConfigRoom(String[] tokens, String auth_token);
+	public abstract void showConfigRoom(String roomName, String auth_token);
 	/**
 	 * show all the configuration of all the houses
 	 * including all the rooms and devices and their status
@@ -91,31 +96,31 @@ public interface ServiceInterface {
 
 	/**
 	 * find a house based on name
-	 * @param house
+	 * @param houseName
 	 * @return
 	 */
-	public abstract House findHouse(String house,String auth_token);
+	public abstract House findHouse(String houseName,String auth_token);
 
 	/**
 	 * find the room based on the location
 	 * <houseName>:<roomName> 
-	 * @param input
+	 * @param roomName
 	 * @return
 	 */
-	public abstract Room findRoom(String input,String auth_token);
+	public abstract Room findRoom(String roomName,String auth_token);
 
 	/**
 	 * find the sensor based on the location
-	 * @param input
+	 * @param sensorName in the form of<houseName>:<roomName>:<sensorName>
 	 * @return
 	 */
-	public abstract Sensor findSensor(String input,String auth_token);
+	public abstract Sensor findSensor(String sensorName,String auth_token);
 
 	/**
 	 * find the sensor based on the location
-	 * @param input
+	 * @param applianceName in the form of <houseName>:<roomName>:<applianceName>
 	 * @return
 	 */
-	public abstract Appliance findAppliance(String input,String auth_toekn);
+	public abstract Appliance findAppliance(String applianceName,String auth_toekn);
 
 }

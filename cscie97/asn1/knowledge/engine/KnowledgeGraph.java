@@ -40,6 +40,31 @@ public class KnowledgeGraph {
 
 	Map<String, Set<Triple>> queryMapSet = new HashMap<String, Set<Triple>>();
 
+	public void removeTriples(String triple) {
+		String[] str_array = triple.split(" ");
+		Triple tri =tripleMap.get(triple);
+		//if the triple tried to remove does not exist, return;
+		if(tri == null){
+			return;
+		}
+		Node obj = nodeMap.get(str_array[2]);
+		Node sub = nodeMap.get(str_array[0]);
+		Predicate pre = predicateMap.get(str_array[1]);
+		List<String> query_list = generateAllQuerys(tri);
+
+		for (String str : query_list) {
+
+			if (queryMapSet.containsKey(str)) {
+				Set<Triple> trip_set = queryMapSet.get(str);
+			trip_set.remove(tripleMap.get(triple))	;
+
+			}
+		}
+		tripleMap.remove(triple);
+		nodeMap.remove(str_array[2]);
+		nodeMap.remove(str_array[0]);
+		predicateMap.remove(str_array[1]);
+	}
 	/**
 	 * The importTriples() method supports importing a set of Triple instances
 	 * into the KnowledgeGraph.

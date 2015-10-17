@@ -1,5 +1,7 @@
 package cscie97.asn3.housemate.model;
 
+import cscie97.asn3.housemate.controller.HouseMateController;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,7 +24,6 @@ public class HouseMateCLI {
 		try {
 			scanner = new Scanner(System.in);
 			// rest of the code
-
 			String s = "";
 			System.out.println("****************************************");
 			System.out.println("Welcome to House Mate command line interface");
@@ -40,7 +41,7 @@ public class HouseMateCLI {
 
 	/**
 	 * method for input file
-	 * 
+	 *
 	 * @param fileName
 	 */
 	public static void importConfigFile(String fileName) throws IOException {
@@ -86,7 +87,7 @@ public class HouseMateCLI {
 
 	/**
 	 * method for taking a command, execute if passed the general format test
-	 * 
+	 *
 	 * @param command
 	 * @param auth_token
 	 */
@@ -102,7 +103,7 @@ public class HouseMateCLI {
 
 	/**
 	 * method for basic format check of the command
-	 * 
+	 *
 	 * @param command
 	 * @return tokenized command
 	 */
@@ -111,12 +112,12 @@ public class HouseMateCLI {
 		System.out.println("");
 		System.out.println("input command: " + command);
 		System.out.println("*********************************************");
-	
+
 		command = command.trim();
 		String[] tokens;
 		tokens = command.split("\\s+");
 
-		if (CommandKeyWord.contains(tokens[0]) && tokens.length < 10) {
+		if (CommandKeyWord.contains(tokens[0]) ) {
 			return tokens;
 		} else
 			return null;
@@ -124,61 +125,111 @@ public class HouseMateCLI {
 
 	/**
 	 * execute the command
-	 * 
+	 *
 	 * @param tokens
 	 */
 	public static void exeCheckedCommand(String[] tokens, String auth_token) {
 
 		if (tokens[0].equals("define") && tokens[1].equals("house")) {
-			HouseMateModel.getInstance().defineHouse(tokens, auth_token);
+			if (tokens.length < 3) {
+				System.err.println("Please add the name of the house");
+			} else if (tokens.length > 3) {
+				System.err.println("The name should not contain space");
+			} else {
+				HouseMateModel.getInstance().defineHouse(tokens[2], auth_token);
+			}
 		}
 
 		// This is for the command
 		// "define room <room_name> floor <floor> type<room_type> house <house_name>"
 
 		else if (tokens[0].equals("define") && tokens[1].equals("room")) {
-			HouseMateModel.getInstance().defineRoom(tokens, auth_token);
+
+			if (tokens.length == 9 && tokens[3].equals("floor")
+					&& tokens[5].equals("type") && tokens[7].equals("house")){
+				HouseMateModel.getInstance().defineRoom(tokens[2],tokens[4],tokens[6],tokens[8], auth_token);
+			}else {
+				System.err
+						.println("invalid input, Please try to define the room again");
+			}
 		}
 		// This is for the command
 		// "define occupants <occupant_name> type <occupant_type>"
 		else if (tokens[0].equals("define") && tokens[1].equals("occupant")) {
-			HouseMateModel.getInstance().defineOccupant(tokens, auth_token);
+			// check the format of the input, the length has to be 3;
+			if (tokens.length < 5) {
+				System.err.println("Please add the all the info of the occupant");
+			} else if (tokens.length > 5) {
+				System.err
+						.println("Please define the name and type of the occupant");
+			} else {
+				HouseMateModel.getInstance().defineOccupant(tokens[2],tokens[4], auth_token);
+			}
 		}
 		// This is for the command
 		// "add occupant <occupant_name> to_house <house_name>"
 		else if (tokens[0].equals("add") && tokens[1].equals("occupant")
 				&& tokens[3].equals("to_house")) {
-			HouseMateModel.getInstance().addOccupant2House(tokens, auth_token);
+			HouseMateModel.getInstance().addOccupant2House(tokens[2], tokens[4], auth_token);
 		}
 
 		// This is for the command
 		// "define sensor <name> type <sensor_type> room <house_name>:<room_name>"
 		else if (tokens[0].equals("define") && tokens[1].equals("sensor")) {
-			HouseMateModel.getInstance().defineSensor(tokens, auth_token);
+			// if the length is not valid
+			if (tokens.length < 7) {
+				System.err.println("Need more info to define sensor");
+			} else if (tokens.length > 7) {
+				System.err.println("Please check your define sensor format");
+			}else {
+				HouseMateModel.getInstance().defineSensor(tokens[2],tokens[4],tokens[6], auth_token);
+			}
 		}
 		// This is for the command
 		// "define appliance <name> type <appliance_type> room <house_name>:<room_name>"
 		else if (tokens[0].equals("define") && tokens[1].equals("appliance")) {
-			HouseMateModel.getInstance().defineAppliance(tokens, auth_token);
+			// if the length is not valid
+			if (tokens.length < 7) {
+				System.err.println("Need more info to define appliance");
+			} else if (tokens.length > 7) {
+				System.err
+						.println("Please check your define appliance statement format");
+			} else{
+				HouseMateModel.getInstance().defineAppliance(tokens[2],tokens[4],tokens[6], auth_token);
+			}
 		}
 		// This is the command for set appliance house_name:room_name name
 
 		else if (tokens[0].equals("set")
-				&& (tokens[1].equals("sensor") || tokens[1].equals("appliance"))
-				&& (tokens.length == 3 || tokens.length == 7)) {
-			HouseMateModel.getInstance().setSenOrApp(tokens, auth_token);
-		} else if (tokens[0].equals("show")
-				&& (tokens[1].equals("sensor") || tokens[1].equals("appliance"))
+				&& (tokens[1].equals("sensor") )
+				) {
+			HouseMateController.getInstance().setSensor(tokens, auth_token);
+		} else if (tokens[0].equals("set")
+				&& (tokens[1].equals("appliance"))
+				) {
+			HouseMateModel.getInstance().setApplianceStatus(tokens[2],tokens[4],tokens[6], auth_token);
+		}
+		else if (tokens[0].equals("show")
+				&& (tokens[1].equals("sensor") )
 				&& (tokens.length > 2 && tokens.length < 6)) {
-			HouseMateModel.getInstance().showSenOrApp(tokens, auth_token);
-		} else if (tokens.length == 4 && tokens[0].equals("show")
+			HouseMateModel.getInstance().showSensor(tokens[2], auth_token);
+		}else if (tokens[0].equals("show")
+				&& tokens[1].equals("appliance")
+				&& tokens.length == 5) {
+			HouseMateModel.getInstance().showApplianceStatus(tokens[2], tokens[4], auth_token);
+		}else if (tokens[0].equals("show")
+				&& tokens[1].equals("appliance")
+				&& (tokens.length == 3)) {
+			HouseMateModel.getInstance().showAllApplianceStatus(tokens[2], auth_token);
+		}
+		else if (tokens.length == 4 && tokens[0].equals("show")
 				&& tokens[1].equals("configuration")
 				&& tokens[2].equals("house")) {
-			HouseMateModel.getInstance().showConfigHouse(tokens, auth_token);
+			HouseMateModel.getInstance().showConfigHouse(tokens[3], auth_token);
 		} else if (tokens.length == 4 && tokens[0].equals("show")
 				&& tokens[1].equals("configuration")
 				&& tokens[2].equals("room")) {
-			HouseMateModel.getInstance().showConfigRoom(tokens, auth_token);
+			HouseMateModel.getInstance().showConfigRoom(tokens[3], auth_token);
 		} else if (tokens.length == 2 && tokens[0].equals("show")
 				&& tokens[1].equals("configuration")) {
 			HouseMateModel.getInstance().showConfigAllHouse(auth_token);

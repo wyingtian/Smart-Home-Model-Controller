@@ -14,7 +14,6 @@ public abstract class Sensor extends IOTDevice {
 		super(name, type, location);
 
 	}
-
 	/**
 	 * show the basic sensor info
 	 * 

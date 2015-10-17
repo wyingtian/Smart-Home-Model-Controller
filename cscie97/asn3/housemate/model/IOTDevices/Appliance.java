@@ -1,5 +1,6 @@
 package cscie97.asn3.housemate.model.IOTDevices;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 import cscie97.asn3.housemate.model.Room;
@@ -12,12 +13,12 @@ import cscie97.asn3.housemate.model.Room;
  */
 public abstract class Appliance extends IOTDevice {
 	Scanner scan;
+	   // A set contains the type string of appliance
 
 	public Appliance(String name, String type, Room location) {
 		super(name, type, location);
 		scan = new Scanner(System.in);
 	}
-
 	/**
 	 * show the basic appliance info
 	 * 

@@ -55,7 +55,7 @@ public class QueryEngine {
 					query_triple);
 
 			// if the Set is empty, means no acknowledgement for the query
-			if (res == null) {
+			if (res == null || res.isEmpty()  ) {
 				System.out.println("output:");
 				System.out.println("<null>");
 			} else {
@@ -131,6 +131,5 @@ public class QueryEngine {
 				System.out.println("!!  NullPointExcepition" + fileName);
 			}
 		}
-
 	}
 }

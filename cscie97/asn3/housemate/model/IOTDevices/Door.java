@@ -17,6 +17,7 @@ public class Door extends Appliance{
 
 	public void setState(String state) {
 		this.state = state;
+		System.out.println(this.getName()+" in "+this.getLocationPair()+" is "+state);
 	}
 
 	@Override
@@ -24,6 +25,7 @@ public class Door extends Appliance{
 		return "The name of the " + type + " is " + name + ", It is in Room "
 				+ location.roomInfo();
 	}
+
 	@Override
 	public void showAllStatus() {
 		System.out.print("The door: ");
@@ -48,12 +50,10 @@ public class Door extends Appliance{
 		}else{
 			System.out.println("Invalid door state");
 		}
-		
 	}
 	@Override
 	public void showStatus(String status) {
 		System.out.println("The door is now" +getState());
-		
 	}
 	@Override
 	public void setDefault() {

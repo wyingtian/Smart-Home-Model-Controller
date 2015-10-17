@@ -36,7 +36,7 @@ import java.util.Scanner;
 public class HouseMateModel implements ServiceInterface {
 
 	private static final ServiceInterface MODEL = new HouseMateModel();
-	HashMap<String, House> homeMap ;															// hashset
+	HashMap<String, House> homeMap ;
 	HashMap<String, Occupant> allOccupantMap;
 
 	public HashMap<String, House> getHomeMap() {
@@ -55,7 +55,19 @@ public class HouseMateModel implements ServiceInterface {
 	public static ServiceInterface getInstance() {
 		return MODEL;
 	}
-	
+
+	public static boolean isApplianceType(String type){
+		HashSet<String> ApplianceTypeSet = new HashSet<String>();
+		ApplianceTypeSet.add("door");
+		ApplianceTypeSet.add("light");
+		ApplianceTypeSet.add("oven");
+		ApplianceTypeSet.add("pandora");
+		ApplianceTypeSet.add("refrigerator");
+		ApplianceTypeSet.add("thermostat");
+		ApplianceTypeSet.add("tv");
+		ApplianceTypeSet.add("Window");
+		return ApplianceTypeSet.contains(type);
+	}
 	/**
 	 * This method create a house object
 	 * add added the house object to HouseMateModel allHouseMap.
@@ -63,15 +75,10 @@ public class HouseMateModel implements ServiceInterface {
 	 * @param auth_token for access control  
 	 */
 	@Override
-	public void defineHouse(String[] tokens, String auth_token ) {
+	public void defineHouse(String houseName, String auth_token ) {
 		// check the format of the input, the length has to be 3;
-		if (tokens.length < 3) {
-			System.err.println("Please add the name of the house");
-		} else if (tokens.length > 3) {
-			System.err.println("The name should not contain space");
-		} else {
-			String houseName;
-			houseName = tokens[2];
+
+
 			if (homeMap.containsKey(houseName)) {
 				// if the name already exist
 				System.out.println(houseName + " this Name exists ");
@@ -82,7 +89,6 @@ public class HouseMateModel implements ServiceInterface {
 				System.out.println("The house defined! House name is " + "\""
 						+ houseName + "\"");
 			}
-		}
 	}
 
 	/**
@@ -91,38 +97,31 @@ public class HouseMateModel implements ServiceInterface {
 	 * @param auth_token
 	 */
 	@Override
-	public void defineRoom(String[] tokens, String auth_token) {
+	public void defineRoom(String roomName, String floor,  String type, String houseName, String auth_token) {
 		// check if the the format is right
 
-		if (tokens.length == 9 && tokens[3].equals("floor")
-				&& tokens[5].equals("type") && tokens[7].equals("house")) {
 
 			// try to find the house it belongs to
-			if (!homeMap.containsKey(tokens[8])) {
+			if (!homeMap.containsKey(houseName)){
 				System.err
 						.println("The House have not been created");
 			} else {
 				House roomIn;
-				roomIn = homeMap.get(tokens[8]); // find the house it is in;
+				roomIn = homeMap.get(houseName); // find the house it is in;
 				// check if the room name already exist
-				if (roomIn.roomMap.containsKey(tokens[2])) {
-					System.err.println(tokens[2] + " name already exist!");
+				if (roomIn.roomMap.containsKey(roomName)) {
+					System.err.println(roomName + " name already exist!");
 				}
-				// if name not exist creaet new object.
+				// if name not exist create new object.
 				else {
-					Room room = new Room(tokens[2], tokens[4], tokens[6],
+					Room room = new Room(roomName, floor, type,
 							roomIn);
 					// add the room to the house map
-					roomIn.roomMap.put(tokens[2], room);
+					roomIn.roomMap.put(roomName, room);
 					System.out.println("The Room has been created! "
 							+ room.roomInfo());
 				}
 			}
-		} else {
-			System.err
-					.println("invalid input, Please try to define the room again");
-		}
-
 	}
 	/**
 	 * create occupant object
@@ -131,27 +130,18 @@ public class HouseMateModel implements ServiceInterface {
 	 */
 
 	@Override
-	public void defineOccupant(String[] tokens, String auth_token) {
-		// check the format of the input, the length has to be 3;
-		if (tokens.length < 5) {
-			System.err.println("Please add the all the info of the occupant");
-		} else if (tokens.length > 5) {
-			System.err
-					.println("Please define the name and type of the occupant");
-		} else {
-			String occuName;
-			occuName = tokens[2];
-			String occuType;
-			occuType = tokens[4];
+	public void defineOccupant(String occuName,String occuType, String auth_token) {
+
+
 			if (allOccupantMap.containsKey(occuName)) {
 				// if the name already exist
 				System.err
 						.println(occuName
-								+ "this Name exists, If there are people with same name, Please differientated them ");
+								+ "this Name exists, If there are people with same name, Please differentiate them ");
 			} else {
 				// create the object and then put it in the house map
 				Occupant occupant;
-				switch (tokens[4]) {
+				switch (occuType) {
 				case "adult":
 
 					occupant = new Adult(occuName, occuType);
@@ -183,7 +173,7 @@ public class HouseMateModel implements ServiceInterface {
 				}
 
 			}
-		}
+
 	}
 
 	/**
@@ -193,26 +183,26 @@ public class HouseMateModel implements ServiceInterface {
 	 */
 
 	@Override
-	public void addOccupant2House(String[] tokens, String auth_token) {
-		// if the person is not defiened yet
-		if (!allOccupantMap.containsKey(tokens[2])) {
-			System.err.println("Can't find " + tokens[2]);
+	public void addOccupant2House(String occName,String houseName ,String auth_token) {
+		// if the person is not defined yet
+		if (!allOccupantMap.containsKey(occName)) {
+			System.err.println("Can't find " + occName);
 		}
 		// if the room is not defined yet
-		if (!homeMap.containsKey(tokens[4])) {
-			System.err.println("Can't find " + tokens[4]);
+		if (!homeMap.containsKey(houseName)) {
+			System.err.println("Can't find " + houseName);
 		}
 		// if the house and person are both defined
-		if (allOccupantMap.containsKey(tokens[2])
-				&& homeMap.containsKey(tokens[4])) {
+		if (allOccupantMap.containsKey(occName)
+				&& homeMap.containsKey(houseName)) {
 			Occupant theOccup;
 			House theHouse;
-			theOccup = allOccupantMap.get(tokens[2]);
-			theHouse = homeMap.get(tokens[4]);
+			theOccup = allOccupantMap.get(occName);
+			theHouse = homeMap.get(houseName);
 			theOccup.addHouse(theHouse);
 			theHouse.addOccupant(theOccup);
-			System.out.println("Occupant " + tokens[2] + " is added to " + " House "
-					+ tokens[4]);
+			System.out.println("Occupant " + occName + " is added to " + " House "
+					+ houseName);
 		}
 	}
 
@@ -236,7 +226,7 @@ public class HouseMateModel implements ServiceInterface {
 
 	/**
 	 * find the room based on the location
-	 * <houseName>:<roomName> 
+	 * <houseName>:<roomName>
 	 * @param input
 	 * @return
 	 */
@@ -344,47 +334,43 @@ public class HouseMateModel implements ServiceInterface {
 	 * @param auth_token for access control
 	 */
 	@Override
-	public void defineSensor(String[] tokens, String auth_token) {
+	public void defineSensor(String sensorName,String sensorType,String roomName, String auth_token) {
 		// theRoom variable to find the Room that the user give
 		Room theRoom;
 		Sensor theSensor;
 
-		// if the length is not valid
-		if (tokens.length < 7) {
-			System.err.println("Need more info to define sensor");
-		} else if (tokens.length > 7) {
-			System.err.println("Please check your define sensor format");
-		} else if ((theRoom = findRoom(tokens[6],auth_token)) == null) {
+
+		 if ((theRoom = findRoom(roomName,auth_token)) == null) {
 
 			System.err
 					.println("The room"
-							+ tokens[6]
+							+ roomName
 							+ " is not found, Please check again or define the room first");
 		} else {
 
-			switch (tokens[4]) {
+			switch (sensorType) {
 			case "smoke_detector":
 				SmokeDetector theSmDe;
-				theSmDe = new SmokeDetector(tokens[2], tokens[4], theRoom);
-				theRoom.sensorMap.put(tokens[2], theSmDe);
+				theSmDe = new SmokeDetector(sensorName,sensorType, theRoom);
+				theRoom.sensorMap.put(sensorName, theSmDe);
 				System.out.println("the smoke_detector has been defined."
 						+ theSmDe.showInfo());
 				theSmDe.setDefault();
 				break;
 			case "camera":
-				theSensor = new Camera(tokens[2], tokens[4], theRoom);
-				theRoom.sensorMap.put(tokens[2], theSensor);
+				theSensor = new Camera(sensorName,sensorType, theRoom);
+				theRoom.sensorMap.put(sensorName, theSensor);
 				System.out.println("the camera has been defined."
 						+ theSensor.showInfo());
 				break;
 			case "Ava":
-				theSensor = new Ava(tokens[2], tokens[4], theRoom);
-				theRoom.sensorMap.put(tokens[2], theSensor);
+				theSensor = new Ava(sensorName,sensorType, theRoom);
+				theRoom.sensorMap.put(sensorName, theSensor);
 				System.out.println("the Ava has been defined."
 						+ theSensor.showInfo());
 				break;
 			default:
-				System.out.println("Unknow type of sensor!");
+				System.out.println("Unknown type of sensor!");
 			}
 
 		}
@@ -397,158 +383,118 @@ public class HouseMateModel implements ServiceInterface {
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control
 	 */
+
+
 	@Override
-	public void defineAppliance(String[] tokens,String auth_token) {
+	public void defineAppliance(String appName,String appType,String roomName, String auth_token) {
 		// theRoom variable to find the Room that the user give
 		Room theRoom;
 
-		// if the length is not valid
-		if (tokens.length < 7) {
-			System.err.println("Need more info to define appliance");
-		} else if (tokens.length > 7) {
-			System.err
-					.println("Please check your define appliance statement format");
-		} else if ((theRoom = findRoom(tokens[6],auth_token)) == null) {
+		if ((theRoom = findRoom(roomName,auth_token)) == null) {
 
 			System.err
 					.println("The room"
-							+ tokens[6]
+							+ roomName
 							+ " is not found, Please check again or define the room first");
 		} else {
 
-			switch (tokens[4]) {
+			switch (appType) {
 			case "TV":
 				TV theTV;
-				theTV = new TV(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theTV);
+				theTV = new TV(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theTV);
 				System.out.println("TV has been defined."
 						+ theTV.showInfo());
 				theTV.setDefault();
 				break;
 			case "oven":
 				Oven theOven;
-				theOven = new Oven(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theOven);
+				theOven = new Oven(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theOven);
 				System.out.println("Oven has been defined."
 						+ theOven.showInfo());
 				theOven.setDefault();
 				break;
 			case "refrigerator":
 				Refrigerator theRegrigerator;
-				theRegrigerator = new Refrigerator(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theRegrigerator);
+				theRegrigerator = new Refrigerator(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theRegrigerator);
 				System.out.println("Regrigerator has been defined."
 						+ theRegrigerator.showInfo());
 				theRegrigerator.setDefault();
 				break;
 			case "pandora" :
 				Pandora thePandora;
-				thePandora = new Pandora(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], thePandora);
+				thePandora = new Pandora(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, thePandora);
 				System.out.println("Pandora has been defined."
 						+ thePandora.showInfo());
 				thePandora.setDefault();
 				break;
 			case "light":
 				Light theLight;
-				theLight = new Light(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theLight);
+				theLight = new Light(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theLight);
 				System.out.println("Light has been defined."
 						+ theLight.showInfo());
 				theLight.setDefault();
 				break;
 			case "door":
 				Door theDoor;
-				theDoor = new Door(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theDoor);
+				theDoor = new Door(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theDoor);
 				System.out.println("Door has been defined."
 						+ theDoor.showInfo());
 				theDoor.setDefault();
 				break;
 			case "window":
 				Window theWindow;
-				theWindow = new Window(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theWindow);
+				theWindow = new Window(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theWindow);
 				System.out.println("Window has been defined."
 						+ theWindow.showInfo());
 				theWindow.setDefault();
 				break;
 			case "thermostat":
 				Thermostat theThermostat;
-				theThermostat = new Thermostat(tokens[2], tokens[4], theRoom);
-				theRoom.applianceMap.put(tokens[2], theThermostat);
+				theThermostat = new Thermostat(appName, appType, theRoom);
+				theRoom.applianceMap.put(appName, theThermostat);
 				System.out.println("Thermostat has been defined."
 						+ theThermostat.showInfo());
 				theThermostat.setDefault();
 				break;
 					
 			default:
-				System.err.println("Unknow type of appliance!");
-			}
-
-		}
-
-	}
-	/**
-	 * set the status of the sensor or appliance 
-	 * @param tokens the String[] is the tokenized command
-	 * @param auth_token for access control
-	 */
-	
-	@Override
-	public void setSenOrApp(String[] tokens, String auth_token) {
-		if (tokens[1].equals("sensor")) {
-			Sensor theSensor;
-			theSensor = findSensor(tokens[2],auth_token);
-			if (theSensor != null) {
-				System.out.println(theSensor.showStatus());
-			}else{
-				try {
-					throw new SensorNotFoundException(tokens[2]+ " is not Found" );
-				} catch (SensorNotFoundException e) {
-				}
-			}
-		} else if (tokens[1].equals("appliance")) {
-			Appliance theApp;
-			theApp = findAppliance(tokens[2],auth_token);
-			if (theApp != null && tokens.length == 7) {
-				theApp.changeStatus(tokens[4],tokens[6]);
-				theApp.showStatus(tokens[4]);
-				 theApp.configMode();
-			}else{
-				try {
-					throw new AppNotFoundException(tokens[2]+ " is not Found" );
-				} catch (AppNotFoundException e) {
-				}
+				System.err.println("Unknown type of appliance!");
 			}
 		}
 	}
+
 	/**
 	 * show the status of the sensor or appliance 
 	 * @param tokens the String[] is the tokenized command
 	 * @param auth_token for access control
 	 */
-
-	@Override
-	public void showSenOrApp(String[] tokens, String auth_token) {
-		if (tokens[1].equals("sensor")) {
+	public void showSensor(String sensorName, String auth_token) {
 			Sensor theSensor;
-			theSensor = findSensor(tokens[2],auth_token);
+			theSensor = findSensor(sensorName,auth_token);
 			if (theSensor != null) {
 				System.out.println(theSensor.showStatus());
 			}
-		} else if (tokens[1].equals("appliance")) {
-			Appliance theApp;
-			theApp = findAppliance(tokens[2],auth_token);
-			
-			if (theApp != null && tokens.length == 5 ) {
-				theApp.showStatus(tokens[4]);
-				
-			}else if(theApp != null && (tokens.length == 4 || tokens.length == 3)){
-				theApp.showAllStatus();
-			}
+	}
+	public void showApplianceStatus(String appName,String statusName,String auth_token){
+		Appliance theApp;
+		theApp = findAppliance(appName,auth_token);
+		if (theApp != null  ) {
+			theApp.showStatus(statusName);
 		}
-
+	}
+	public void showAllApplianceStatus(String appName,String auth_token){
+		Appliance theApp;
+		theApp = findAppliance(appName,auth_token);
+		if (theApp != null  ) {
+			theApp.showAllStatus();
+		}
 	}
 	/**
 	 * show all the configuration of the house
@@ -558,11 +504,27 @@ public class HouseMateModel implements ServiceInterface {
 	 */
 
 	@Override
-	public void showConfigHouse(String[] tokens, String auth_token) {
-		House theHouse = findHouse(tokens[3],auth_token);
+	public void showConfigHouse(String houseName, String auth_token) {
+		House theHouse = findHouse(houseName,auth_token);
 		if (theHouse != null) {
 			theHouse.showOccupInHouse();
 			theHouse.showRoomInHouse();
+		}
+	}
+
+	@Override
+	public void setApplianceStatus(String appName, String statusName, String value,String auth_token) {
+		Appliance theApp;
+		theApp = findAppliance(appName, auth_token);
+		if (theApp != null ) {
+			theApp.changeStatus(statusName,value);
+			theApp.showStatus(statusName);
+			// theApp.configMode();
+		}else{
+			try {
+				throw new AppNotFoundException(statusName+ " is not Found" );
+			} catch (AppNotFoundException e) {
+			}
 		}
 	}
 
@@ -573,8 +535,8 @@ public class HouseMateModel implements ServiceInterface {
 	 * @param auth_token
 	 */
 	@Override
-	public void showConfigRoom(String[] tokens, String auth_token) {
-		Room theRoom = findRoom(tokens[3],auth_token);
+	public void showConfigRoom(String roomName, String auth_token) {
+		Room theRoom = findRoom(roomName,auth_token);
 		if (theRoom != null) {
 			System.out.println(theRoom.roomInfo());
 			theRoom.showSenInRoom();

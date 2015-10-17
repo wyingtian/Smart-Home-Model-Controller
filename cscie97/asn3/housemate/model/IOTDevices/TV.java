@@ -9,12 +9,11 @@ import cscie97.asn3.housemate.model.Room;
 public class TV extends Appliance {
 
 	
-	private int channel;
+	private String channel;
 	private String powerStatus;
 	private int volume;	
 	public TV(String name, String type, Room location) {
 		super(name, type, location);
-		
 	}
 
 	// show the basic info of the TV
@@ -22,10 +21,10 @@ public class TV extends Appliance {
 		return "The name of the " + type + " is " + name + ", It is in Room "
 				+ location.roomInfo();
 	}
-	public int getChannel() {
+	public String getChannel() {
 		return channel;
 	}
-	public void setChannel(int channel) {
+	public void setChannel(String channel) {
 		this.channel = channel;
 	}
 	public String getPowerStatus() {
@@ -56,7 +55,7 @@ public class TV extends Appliance {
 		switch (status){
 		case "power":  setPowerStatus(value);break;
 		case "volume": setVolume(Integer.parseInt(value));break;
-		case "channel":setChannel(Integer.parseInt(value));break;
+		case "channel":setChannel(value);break;
 		default:System.out.println("Wrong status input");break;
 		}
 	}
@@ -102,7 +101,7 @@ public class TV extends Appliance {
 			break;
 		case 2:
 			System.out.println("Please enter the channel number");
-			this.setChannel(scan.nextInt());
+			this.setChannel(scan.nextLine());
 			System.out
 					.println("the chanel now is " + this.getChannel());
 			break;
@@ -162,14 +161,13 @@ public class TV extends Appliance {
 		case "channel":System.out.println("The channel status of the tv is now "+getChannel());break;
 		default:System.out.println("Wrong status input");break;
 		}
-		
 	}
 
 	@Override
 	public void setDefault() {
 		setPowerStatus("OFF");
 		setVolume(30);
-		setChannel(0);
+		setChannel("0");
 		
 	}
 }

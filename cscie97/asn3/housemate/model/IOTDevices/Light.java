@@ -17,6 +17,7 @@ public class Light extends Appliance {
 
 	public void setPower(String power) {
 		Power = power;
+		System.out.println(this.getName()+" in "+this.getLocationPair()+" is "+power);
 	}
 
 	public int getIntensity() {
@@ -94,7 +95,7 @@ public class Light extends Appliance {
 
 	@Override
 	public void setDefault() {
-		setIntensity(0);
+		setIntensity(50);
 		setPower("OFF");
 
 	}

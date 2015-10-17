@@ -23,8 +23,6 @@ public class Thermostat extends Appliance{
 		Power = power;
 	}
 
-	
-
 	public int getTemperature() {
 		return temperature;
 	}
@@ -75,7 +73,7 @@ public class Thermostat extends Appliance{
 				System.out.println("Wrong temperature input");
 			break;
 		default:
-			System.out.println("Wrong termostat status input");
+			System.out.println("Wrong thermostat status input");
 			break;
 		}
 		
@@ -85,11 +83,11 @@ public class Thermostat extends Appliance{
 	public void showStatus(String status) {
 		switch (status) {
 		case "power":
-			System.out.println("The power status of the thermostat is now "
+			System.out.println("The power status of the "+ this.getName()+" is now "
 					+ getPower());
 			break;
 		case "temperature":
-			System.out.println("The temperature of the thermostat is now "
+			System.out.println("The temperature of the "+ this.getName()+" is now "
 					+ getTemperature());
 			break;
 
@@ -104,7 +102,7 @@ public class Thermostat extends Appliance{
 	@Override
 	public void setDefault() {
 		setPower("OFF");
-		setTemperature(73);
+		setTemperature(75);
 		
 	}
 
