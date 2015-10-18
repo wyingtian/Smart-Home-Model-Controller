@@ -1,12 +1,15 @@
 package cscie97.asn3.housemate.model.IOTDevices;
 
 import cscie97.asn3.housemate.model.Room;
+
+import java.util.Observable;
+
 /**
  * abstract class for sensor and appliance
  * @author ying
  *
  */
-public abstract class IOTDevice {
+public abstract class IOTDevice extends Observable{
 	protected String name;
 	protected String type;
 	protected Room location;

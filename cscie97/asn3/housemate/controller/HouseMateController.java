@@ -6,81 +6,66 @@ import cscie97.asn3.housemate.model.IOTDevices.*;
 import cscie97.asn3.housemate.model.exception.SensorNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
  * Created by ying on 10/10/15.
  */
 
-public class HouseMateController {
+public class HouseMateController implements Observer{
+    Observable observable;
 
-    private static final HouseMateController controller = new HouseMateController();
+    private static final HouseMateController theController = new HouseMateController();
     ServiceInterface model = HouseMateModel.getInstance();
-    StringBuilder line;
+//    StringBuilder line;
 //    Importer i = new Importer();
 //    QueryEngine q = new QueryEngine();
+//    private HouseMateController( observable){
+//        this.observable = observable;
+//        observable.addObserver(this);
+//    }
+
     private HouseMateController(){
 
     }
 
     public static HouseMateController getInstance(){
-        return controller;
+        return theController;
     }
-
-    public String getAvaCommand(String []tokens){
-        String Stimulus="";
-        String Statement="";
-        line = new StringBuilder();
-        for(int i = 0; i < tokens.length;i++){
-            line.append(tokens[i]);
-            line.append(" ");
-        }
-        Pattern p = Pattern.compile("\"([^\"]*)\"");
-        Matcher m = p.matcher(line);
-        while (m.find()) {
-            Statement=m.group(1);
-        }
-
-        Pattern l = Pattern.compile("([^\']*)\'([^\']*)\'");
-        Matcher n = l.matcher(Statement);
-        while (n.find()) {
-            Stimulus=n.group(2);
-        }
-        return Stimulus;
-    }
-
-
-
-    /**
-     * set the status of the sensor or appliance
-     * @param tokens the String[] is the tokenized command
-     * @param auth_token for access control
-     */
-
-    public void setSensor(String[] tokens, String auth_token) {
+    @Override
+    public void update(Observable obs, Object arg) {
         Sensor theSensor;
-        String sensorType;
-        theSensor = model.findSensor(tokens[2], auth_token);
-        if(theSensor != null ){
-        sensorType = theSensor.getType();
-            if (sensorType.equals("Ava") ) {
-                AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-                avaCom.execute();
-           // executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-            // System.out.println(theSensor.showStatus());
-            } else if(sensorType.equals("camera")){
-                CameraCommand camCom = new CameraCommand(tokens[4],tokens[6],(Camera)theSensor);
-                camCom.execute();
-           // executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+        Appliance theAppliance;
+
+        if(obs instanceof Refrigerator){
+
+           theAppliance = (Refrigerator)obs;
+            if( (Integer.parseInt(((Refrigerator)theAppliance).getBeerCount()) < 4)){
+                System.out.println(arg + " has changed");
+                model.avaInRoomSpeak(theAppliance.getLocationPair(), "Would you like more beer?", "");
+                Scanner in = new Scanner(System.in);
+                String s;
+                System.out.println("Enter yes or no");
+                s = in.nextLine();
+                if(s.equals("yes")){
+                    System.out.println("Order email has been sent");
+                }else if(s.equals("no")){
+                    System.out.println("Ok, no beer for you :(");
+                }
             }
-        }else{
-            try {
-                throw new SensorNotFoundException(tokens[2]+ " is not Found" );
-            } catch (SensorNotFoundException e) {
+        }else if(obs instanceof Oven){
+            theAppliance = (Oven)obs;
+            if( (Integer.parseInt(((Oven)theAppliance).getTimeToCook()) == 0)){
+                ((Oven) theAppliance).setPower("off");
+                System.out.println(arg + " has changed");
+                model.avaInRoomSpeak(theAppliance.getLocationPair(),"Food is Ready","");
             }
         }
-    }
 
+    }
 
     public static void main(String args[]){
         HouseMateController con= HouseMateController.getInstance();
@@ -95,6 +80,92 @@ public class HouseMateController {
     }
 
 
+
+//
+//    public void createCommand(String deviceName, String deviceStatusName, String deviceStatusValue, String[] tokens,Appliance app; String authToken){
+//        Sensor theSensor;
+//        String sensorType;
+//        theSensor = findSensor(sensorName, authToken);
+//        if(theSensor != null ){
+//            sensorType = theSensor.getType();
+//            if (sensorType.equals("Ava") ) {
+//                AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//                avaCom.execute();
+//                // executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//                // System.out.println(theSensor.showStatus());
+//            } else if(sensorType.equals("camera")){
+//                CameraCommand camCom = new CameraCommand(statusName,value,(Camera)theSensor);
+//                camCom.execute();
+//                // executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+//            }else if(sensorType.equals("smoke_detector")){
+//                theSensor.setStatus(statusName,value);
+//                if(theSensor.getValue().equals("FIRE")){
+//                    SmokeDetectorCommand smoDetCom = new SmokeDetectorCommand(statusName,value,(SmokeDetector)theSensor);
+//                    smoDetCom.execute();
+//                }
+//            }
+//        }else{
+//            try {
+//                throw new SensorNotFoundException(sensorName+ " is not Found" );
+//            } catch (SensorNotFoundException e) {
+//            }
+//        }
+//    }
+
+
+//    public String getAvaCommand(String []tokens){
+//        String Stimulus="";
+//        String Statement="";
+//        line = new StringBuilder();
+//        for(int i = 0; i < tokens.length;i++){
+//            line.append(tokens[i]);
+//            line.append(" ");
+//        }
+//        Pattern p = Pattern.compile("\"([^\"]*)\"");
+//        Matcher m = p.matcher(line);
+//        while (m.find()) {
+//            Statement=m.group(1);
+//        }
+//
+//        Pattern l = Pattern.compile("([^\']*)\'([^\']*)\'");
+//        Matcher n = l.matcher(Statement);
+//        while (n.find()) {
+//            Stimulus=n.group(2);
+//        }
+//        return Stimulus;
+//    }
+
+
+
+    /**
+     * set the status of the sensor or appliance
+     * @param tokens the String[] is the tokenized command
+     * @param auth_token for access control
+     */
+
+//    public void setSensor(String[] tokens, String auth_token) {
+//        Sensor theSensor;
+//        String sensorType;
+//        theSensor = model.findSensor(tokens[2], auth_token);
+//        if(theSensor != null ){
+//        sensorType = theSensor.getType();
+//            if (sensorType.equals("Ava") ) {
+//                AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//                avaCom.execute();
+//           // executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//            // System.out.println(theSensor.showStatus());
+//            } else if(sensorType.equals("camera")){
+//                CameraCommand camCom = new CameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+//                camCom.execute();
+//           // executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+//            }
+//        }else{
+//            try {
+//                throw new SensorNotFoundException(tokens[2]+ " is not Found" );
+//            } catch (SensorNotFoundException e) {
+//            }
+//        }
+//    }
 
 
     //    public void executeAvaCommand(String stimulus, Ava ava){

@@ -10,6 +10,16 @@ public class Camera extends Sensor {
 
 	}
 
+	@Override
+	public String getValue() {
+		return null;
+	}
+
+	@Override
+	public void setStatus(String statusName, String value) {
+
+	}
+
 	// if the person is in the room ,status is "Occupant detected"
 	// set the status of the Camera
 	public void setStatus(boolean input) {

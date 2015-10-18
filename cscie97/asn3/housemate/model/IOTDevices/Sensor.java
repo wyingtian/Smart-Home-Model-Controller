@@ -14,11 +14,13 @@ public abstract class Sensor extends IOTDevice {
 		super(name, type, location);
 
 	}
+	public abstract void setStatus(String statusName, String value);
 	/**
 	 * show the basic sensor info
 	 * 
 	 * @return
 	 */
+	public abstract String getValue();
 	public abstract String showInfo();
 
 	/**

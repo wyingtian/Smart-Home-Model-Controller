@@ -6,7 +6,7 @@ import cscie97.asn3.housemate.model.Room;
  * @author ying
  *
  */
-public class Refrigerator extends Appliance {
+public class Refrigerator extends Appliance  {
 	private String temperature;
 	private String beerCount;
 	private String Power;
@@ -24,9 +24,15 @@ public class Refrigerator extends Appliance {
 		return beerCount;
 	}
 	public void setBeerCount(String beerCount) {
+
 		this.beerCount = beerCount;
 	}
-	
+
+	public void beerCountChanged(){
+		setChanged();
+		notifyObservers();
+	}
+
 	public String getPower() {
 		return Power;
 	}
@@ -74,12 +80,10 @@ public class Refrigerator extends Appliance {
 		switch (status){
 		case "power":  System.out.println("The power status of the fridge is now "+getPower());break;
 		case "temperature": System.out.println("The temperature of the fridge is now "+getTemperature());;break;
-		case "beercount":System.out.println("Beer count is now "+getTemperature());;break;
+		case "beercount":System.out.println("Beer count is now "+getBeerCount());break;
 		case "clean":System.out.println("The fridge is clean now");;break;
 		default:System.err.println("Wrong fridge status input");break;
 		}
-		
-		
 	}
 	@Override
 	public void setDefault() {

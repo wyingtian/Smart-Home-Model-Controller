@@ -203,7 +203,7 @@ public class HouseMateCLI {
 		else if (tokens[0].equals("set")
 				&& (tokens[1].equals("sensor") )
 				) {
-			HouseMateController.getInstance().setSensor(tokens, auth_token);
+			HouseMateModel.getInstance().setSensor(tokens[2],tokens[4],tokens[6],tokens, auth_token);
 		} else if (tokens[0].equals("set")
 				&& (tokens[1].equals("appliance"))
 				) {

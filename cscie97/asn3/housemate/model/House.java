@@ -23,6 +23,10 @@ public class House {
 		occuMap = new HashMap<String, Occupant>();
 	}
 
+	public HashMap<String, Room> getRoomMap() {
+		return roomMap;
+	}
+
 	/**
 	 * if the house has the room room, check if the house has the room based on
 	 * room name;

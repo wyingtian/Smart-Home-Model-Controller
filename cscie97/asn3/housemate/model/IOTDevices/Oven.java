@@ -91,7 +91,7 @@ public class Oven extends Appliance {
 	public void setDefault() {
 		setTemperature("0");
 		setPower("OFF");
-		setTimeToCook("0");
+		setTimeToCook("-1");
 		
 	}
 

@@ -45,6 +45,10 @@ public class Room  {
 		return applianceMap;
 	}
 
+	public HashMap<String, Sensor> getSensorMap() {
+		return sensorMap;
+	}
+
 	/**
 	 * check if the sensor exsist in the room
 	 * @param String sensor 

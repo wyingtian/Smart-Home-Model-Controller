@@ -2,12 +2,28 @@ define house house1
 define house house2
 define room kitchen1 floor 1 type kitchen house house1
 define room dining_room1 floor 1 type dining_room  house house1
-
+define sensor ava2 type Ava room house1:dining_room1
+define appliance oven1 type oven room house1:dining_room1
+set appliance house1:dining_room1:oven1 status power value on
+show appliance house1:dining_room1:oven1 status power
+set appliance house1:dining_room1:oven1 status timetocook value 0
+show appliance house1:dining_room1:oven1 status power
+show appliance house1:dining_room1:refrigerator1 status beercount
+define appliance refrigerator1 type refrigerator room house1:dining_room1
+set appliance house1:dining_room1:refrigerator1 status beercount value 3
+show appliance house1:dining_room1:refrigerator1 status beercount
 define occupant joe_smith type adult
 define occupant jill_smith type adult
 add occupant joe_smith to_house house1
 add occupant jill_smith to_house house1
 define sensor smoke_detector1 type smoke_detector room house1:kitchen1
+define sensor ava1 type Ava room house1:kitchen1
+define sensor ava2 type Ava room house1:dining_room1
+define appliance light3 type light room house1:kitchen1
+define appliance light4 type light room house1:kitchen1
+define appliance light1 type light room house1:dining_room1
+define appliance light2 type light room house1:dining_room1
+set sensor house1:kitchen1:smoke_detector1 status mode value FIRE
 define sensor camera1 type camera room house1:dining_room1
 define sensor camera1 type camera room house1:kitchen1
 define sensor ava1 type Ava room house1:kitchen1
@@ -17,7 +33,7 @@ define appliance oven1 type oven room house1:kitchen1
 define appliance thermostat1 type thermostat room house1:dining_room1
 define appliance light1 type light room house1:dining_room1
 define appliance light2 type light room house1:dining_room1
-define appliance ligth3 type light room house1:kitchen1
+define appliance light3 type light room house1:kitchen1
 define appliance light4 type light room house1:kitchen1
 define appliance door1 type door room house1:dining_room1
 define appliance door2 type door room house1:dining_room1
@@ -29,6 +45,7 @@ define appliance thermostat1 type thermostat room house1:dining_room1
 define appliance thermostat2 type thermostat room house1:dining_room1
 define appliance thermostat3 type thermostat room house1:kitchen1
 define appliance thermostat4 type thermostat room house1:kitchen1
+
 set sensor house1:kitchen1:camera1 status OCCUPANT_DETECTED value joe_smith
 set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'where is joe_smith'"
 set sensor house1:kitchen1:camera1 status OCCUPANT_LEAVING value joe_smith
