@@ -616,7 +616,8 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 		if(theSensor != null ){
 			sensorType = theSensor.getType();
 			if (sensorType.equals("Ava") ) {
-
+				AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+                avaCom.execute();
 				// executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
 				// System.out.println(theSensor.showStatus());
 			} else if(sensorType.equals("camera")){

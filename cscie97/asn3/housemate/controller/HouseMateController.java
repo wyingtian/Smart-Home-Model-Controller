@@ -35,6 +35,19 @@ public class HouseMateController implements Observer{
     public static HouseMateController getInstance(){
         return theController;
     }
+
+
+    public void beerRequestPrompt(){
+        Scanner in = new Scanner(System.in);
+        String s;
+        System.out.println("Enter yes or no");
+        s = in.nextLine();
+        if(s.equals("yes")){
+            System.out.println("Order email has been sent");
+        }else if(s.equals("no")){
+            System.out.println("Ok, no beer for you :(");
+        }else beerRequestPrompt();
+    }
     @Override
     public void update(Observable obs, Object arg) {
         Sensor theSensor;
@@ -46,15 +59,7 @@ public class HouseMateController implements Observer{
             if( (Integer.parseInt(((Refrigerator)theAppliance).getBeerCount()) < 4)){
                 System.out.println(arg + " has changed");
                 model.avaInRoomSpeak(theAppliance.getLocationPair(), "Would you like more beer?", "");
-                Scanner in = new Scanner(System.in);
-                String s;
-                System.out.println("Enter yes or no");
-                s = in.nextLine();
-                if(s.equals("yes")){
-                    System.out.println("Order email has been sent");
-                }else if(s.equals("no")){
-                    System.out.println("Ok, no beer for you :(");
-                }
+                beerRequestPrompt();
             }
         }else if(obs instanceof Oven){
             theAppliance = (Oven)obs;

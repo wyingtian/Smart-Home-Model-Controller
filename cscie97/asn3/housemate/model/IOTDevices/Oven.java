@@ -81,7 +81,7 @@ public class Oven extends Appliance {
 		switch (status){
 		case "power":  System.out.println("The power status of the oven is now "+getPower());break;
 		case "temperature": System.out.println("The temperature of the oven is now "+getTemperature());;break;
-		case "timetocook":System.out.println("Time to cook of the oven is now "+getTemperature());;break;
+		case "timetocook":System.out.println("Time to cook of the oven is now "+getTimeToCook());;break;
 		default:System.out.println("Wrong status input");break;
 		}
 		

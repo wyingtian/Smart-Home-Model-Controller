@@ -21,7 +21,6 @@ public class AvaCommand implements Command {
         this.ava = ava;
         model = HouseMateModelFactory.getInstance();
     }
-
     @Override
     public void execute() {
             String[] tokens = stimulus.split(" ");
@@ -30,7 +29,8 @@ public class AvaCommand implements Command {
                 model.turnOnAllLights(model.findApplianceByType(ava.getLocationPair(), "light", ""));
             }else if(stimulus.equals("open door")){
                 model.openDoors(model.findApplianceByType(ava.getLocationPair(), "door", ""));
-            }else if(tokens.length == 3 && tokens[0].equals("where") && tokens[1].equals("is")){
+            }
+            else if(tokens.length == 3 && tokens[0].equals("where") && tokens[1].equals("is")){
                 model.getQueryEngine().executeQuery(tokens[2] + " is_in " + "?");
             }else if(tokens.length == 3 && HouseMateModel.isApplianceType(tokens[0])){
                 List<Appliance> list = model.findApplianceByType(ava.getLocationPair(),tokens[0] , "");
@@ -41,10 +41,5 @@ public class AvaCommand implements Command {
             }else if(tokens.length == 3 && (tokens[0].equals("?")||tokens[1].equals("?")||tokens[2].equals("?"))){
                 model.getQueryEngine().executeQuery(stimulus);
             }
-
     }
-
-
-
-
 }
