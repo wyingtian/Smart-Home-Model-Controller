@@ -1,5 +1,6 @@
 package cscie97.asn3.housemate.model;
 
+
 import cscie97.asn1.knowledge.engine.Importer;
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.QueryEngine;
@@ -9,10 +10,11 @@ import cscie97.asn3.housemate.model.Occupants.Occupant;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
 
-public interface ServiceInterface {
-	public HashMap<String, Occupant> getAllOccupantMap();
-	public HashMap<String, House> getHomeMap();
+public abstract class ServiceInterface extends Observable {
+	public abstract HashMap<String, Occupant> getAllOccupantMap();
+	public abstract HashMap<String, House> getHomeMap();
 
 	/**
 	 * This method create a house object
@@ -20,10 +22,10 @@ public interface ServiceInterface {
 	 * @param tokens the String[] is the tokenized command
 	 * @param authToken for access control
 	 */
-	public abstract void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken);
-	public Importer getImporter();
-	public QueryEngine getQueryEngine();
-	public KnowledgeGraph getKnowledgeGraph();
+	 public abstract void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken);
+	public abstract Importer getImporter();
+	public abstract QueryEngine getQueryEngine();
+	public abstract KnowledgeGraph getKnowledgeGraph();
 	public abstract void defineHouse(String houseName, String authToken);
 	public abstract void turnOnLightsInHouse(String houseName,String authToken);
 	public abstract void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken);

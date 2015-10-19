@@ -31,7 +31,6 @@ public class SmokeDetectorCommand implements Command {
         model.turnOnLightsInHouse(houseName,"");
         model.allAvaInHouseSpeak(houseName, FireBroadCastMessage, " ");
         System.out.println("Calling 911");
-
     }
 
 }

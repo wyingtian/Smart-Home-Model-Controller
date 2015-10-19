@@ -46,7 +46,6 @@ public class CameraCommand implements Command {
                 model.getKnowledgeGraph().removeTriples(occ + " is " + "active");
                 model.getImporter().importTripleLine(occ + " is " + "sleeping");
                 sleepProcedure(location, "");
-
             }
         }
     }

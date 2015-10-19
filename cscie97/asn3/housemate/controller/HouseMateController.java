@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
  * Created by ying on 10/10/15.
  */
 
-public class HouseMateController implements Observer{
+public class HouseMateController implements ModelObserverInterface , Observer{
     Observable observable;
 
-    private static final HouseMateController theController = new HouseMateController();
-    ServiceInterface model = HouseMateModel.getInstance();
+
+    HouseMateModel model = HouseMateModel.getInstance();
+
+
 //    StringBuilder line;
 //    Importer i = new Importer();
 //    QueryEngine q = new QueryEngine();
@@ -27,53 +29,58 @@ public class HouseMateController implements Observer{
 //        this.observable = observable;
 //        observable.addObserver(this);
 //    }
-
+    private  static HouseMateController theController = null;
     private HouseMateController(){
+//        this.observable = observable;
+//        observable.addObserver(this);
 
     }
 
-    public static HouseMateController getInstance(){
+    public static  HouseMateController getInstance(){
+
+        if (theController == null) {
+            theController = new HouseMateController();
+        }
         return theController;
     }
 
 
-    public void beerRequestPrompt(){
-        Scanner in = new Scanner(System.in);
-        String s;
-        System.out.println("Enter yes or no");
-        s = in.nextLine();
-        if(s.equals("yes")){
-            System.out.println("Order email has been sent");
-        }else if(s.equals("no")){
-            System.out.println("Ok, no beer for you :(");
-        }else beerRequestPrompt();
+    public void updateSensor(Sensor theSensor, String statusName, String value, String[] tokens, String authToken){
+            String sensorType;
+            sensorType = theSensor.getType();
+            CommandFactory.createSensorCommand(theSensor, sensorType, statusName, value, tokens).execute();
     }
-    @Override
-    public void update(Observable obs, Object arg) {
-        Sensor theSensor;
-        Appliance theAppliance;
 
-        if(obs instanceof Refrigerator){
 
-           theAppliance = (Refrigerator)obs;
-            if( (Integer.parseInt(((Refrigerator)theAppliance).getBeerCount()) < 4)){
-                System.out.println(arg + " has changed");
-                model.avaInRoomSpeak(theAppliance.getLocationPair(), "Would you like more beer?", "");
-                beerRequestPrompt();
-            }
-        }else if(obs instanceof Oven){
-            theAppliance = (Oven)obs;
-            if( (Integer.parseInt(((Oven)theAppliance).getTimeToCook()) == 0)){
-                ((Oven) theAppliance).setPower("off");
-                System.out.println(arg + " has changed");
-                model.avaInRoomSpeak(theAppliance.getLocationPair(),"Food is Ready","");
-            }
-        }
+       @Override
+    public void updateAppliance(Observable obs, String arg) {
+
+            Appliance theAppliance;
+           CommandFactory.createApplianceCommand(obs,arg).execute();
+//
+//        if(obs instanceof Refrigerator){
+//
+//           theAppliance = (Refrigerator)obs;
+//            if( (Integer.parseInt(((Refrigerator)theAppliance).getBeerCount()) < 4)){
+//                Command command = new BeerCountLowCommand((Refrigerator)theAppliance);
+//                command.execute();
+////                System.out.println(arg + " has changed");
+////                model.avaInRoomSpeak(theAppliance.getLocationPair(), "Would you like more beer?", "");
+////                beerRequestPrompt();
+//            }
+//        }else if(obs instanceof Oven){
+//            theAppliance = (Oven)obs;
+//            if( (Integer.parseInt(((Oven)theAppliance).getTimeToCook()) == 0)){
+//                ((Oven) theAppliance).setPower("off");
+//                System.out.println(arg + " has changed");
+//                model.avaInRoomSpeak(theAppliance.getLocationPair(),"Food is Ready","");
+//            }
+//        }
 
     }
 
     public static void main(String args[]){
-        HouseMateController con= HouseMateController.getInstance();
+       // HouseMateController con= HouseMateControllerFactory.getInstance();
         String inputName = args[0];
         try {
             HouseMateCLI.importConfigFile(inputName);
@@ -84,6 +91,10 @@ public class HouseMateController implements Observer{
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 
 
 //

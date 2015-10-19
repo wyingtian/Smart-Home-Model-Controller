@@ -3,6 +3,7 @@ import cscie97.asn1.knowledge.engine.Importer;
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.QueryEngine;
 import cscie97.asn3.housemate.controller.HouseMateController;
+import cscie97.asn3.housemate.controller.HouseMateControllerFactory;
 import cscie97.asn3.housemate.controller.command.*;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 import cscie97.asn3.housemate.model.IOTDevices.Ava;
@@ -37,9 +38,9 @@ import java.util.regex.Pattern;
  * @author ying
  *
  */
-public class HouseMateModel extends Observable implements ServiceInterface {
+public class HouseMateModel  extends ServiceInterface {
 
-	private static final ServiceInterface MODEL = new HouseMateModel();
+	private static final HouseMateModel MODEL = new HouseMateModel();
 	KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 	Importer importer = new Importer();
 	QueryEngine queryEngine = new QueryEngine();
@@ -67,10 +68,10 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 	private HouseMateModel() {
 		AllHouseMap = new HashMap<String, House>();
 		allOccupantMap = new HashMap<String, Occupant>();
-		controller = HouseMateController.getInstance();
+		//controller = HouseMateControllerFactory.getInstance();
 	}
 
-	public static ServiceInterface getInstance() {
+	public static HouseMateModel getInstance() {
 		return MODEL;
 	}
 
@@ -153,7 +154,7 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 
 			if (allOccupantMap.containsKey(occuName)) {
 				// if the name already exist
-				System.err
+				System.out
 						.println(occuName
 								+ "this Name exists, If there are people with same name, Please differentiate them ");
 			} else {
@@ -187,7 +188,7 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 							+ occuType + " defined!");
 					break;
 				default:
-					System.err.println("Unknow type of occupant!");
+					System.out.println("Unknown type of occupant!");
 				}
 
 			}
@@ -204,11 +205,11 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 	public void addOccupant2House(String occName,String houseName ,String authToken) {
 		// if the person is not defined yet
 		if (!allOccupantMap.containsKey(occName)) {
-			System.err.println("Can't find " + occName);
+			System.out.println("Can't find " + occName);
 		}
 		// if the room is not defined yet
 		if (!AllHouseMap.containsKey(houseName)) {
-			System.err.println("Can't find " + houseName);
+			System.out.println("Can't find " + houseName);
 		}
 		// if the house and person are both defined
 		if (allOccupantMap.containsKey(occName)
@@ -410,7 +411,7 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 
 		if ((theRoom = findRoom(roomName, authToken)) == null) {
 
-			System.err
+			System.out
 					.println("The room"
 							+ roomName
 							+ " is not found, Please check again or define the room first");
@@ -537,9 +538,7 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 		if (theApp != null ) {
 			theApp.changeStatus(statusName,value);
 			theApp.showStatus(statusName);
-			HouseMateController.getInstance().update(theApp, statusName);
-
-
+			HouseMateControllerFactory.getInstance().updateAppliance(theApp, statusName);
 			// theApp.configMode();
 		}else{
 			try {
@@ -580,28 +579,7 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 	}
 
 
-	public String getAvaCommand(String []tokens){
-		StringBuilder line;
-		String Stimulus="";
-		String Statement="";
-		line = new StringBuilder();
-		for(int i = 0; i < tokens.length;i++){
-			line.append(tokens[i]);
-			line.append(" ");
-		}
-		Pattern p = Pattern.compile("\"([^\"]*)\"");
-		Matcher m = p.matcher(line);
-		while (m.find()) {
-			Statement=m.group(1);
-		}
 
-		Pattern l = Pattern.compile("([^\']*)\'([^\']*)\'");
-		Matcher n = l.matcher(Statement);
-		while (n.find()) {
-			Stimulus=n.group(2);
-		}
-		return Stimulus;
-	}
 
 	/**
 	 * set the status of the sensor or appliance
@@ -611,26 +589,9 @@ public class HouseMateModel extends Observable implements ServiceInterface {
 
 	public void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken){
 		Sensor theSensor;
-		String sensorType;
 		theSensor = findSensor(sensorName, authToken);
 		if(theSensor != null ){
-			sensorType = theSensor.getType();
-			if (sensorType.equals("Ava") ) {
-				AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-                avaCom.execute();
-				// executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-				// System.out.println(theSensor.showStatus());
-			} else if(sensorType.equals("camera")){
-				CameraCommand camCom = new CameraCommand(statusName,value,(Camera)theSensor);
-				camCom.execute();
-				// executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
-			}else if(sensorType.equals("smoke_detector")){
-				theSensor.setStatus(statusName,value);
-				if(theSensor.getValue().equals("FIRE")){
-					SmokeDetectorCommand smoDetCom = new SmokeDetectorCommand(statusName,value,(SmokeDetector)theSensor);
-					smoDetCom.execute();
-				}
-			}
+			HouseMateControllerFactory.getInstance().updateSensor(theSensor, statusName,value,tokens, authToken);
 		}else{
 			try {
 				throw new SensorNotFoundException(sensorName+ " is not Found" );

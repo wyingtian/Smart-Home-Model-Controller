@@ -1,6 +1,7 @@
 package cscie97.asn3.housemate.model;
 
 import cscie97.asn3.housemate.controller.HouseMateController;
+import cscie97.asn3.housemate.controller.HouseMateControllerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -136,7 +137,7 @@ public class HouseMateCLI {
 			} else if (tokens.length > 3) {
 				System.err.println("The name should not contain space");
 			} else {
-				HouseMateModel.getInstance().defineHouse(tokens[2], auth_token);
+				HouseMateModelFactory.getInstance().defineHouse(tokens[2], auth_token);
 			}
 		}
 

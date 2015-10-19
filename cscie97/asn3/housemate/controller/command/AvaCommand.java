@@ -15,7 +15,6 @@ public class AvaCommand implements Command {
     String stimulus;
     Ava ava;
     ServiceInterface model;
-
     public AvaCommand(String stimulus, Ava ava) {
         this.stimulus = stimulus;
         this.ava = ava;
