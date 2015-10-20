@@ -1,5 +1,6 @@
-package cscie97.asn3.housemate.controller.command;
+package cscie97.asn3.housemate.command.Thermostat;
 
+import cscie97.asn3.housemate.command.Command;
 import cscie97.asn3.housemate.model.IOTDevices.Thermostat;
 
 /**

@@ -1,10 +1,12 @@
-package cscie97.asn3.housemate.controller.command;
+package cscie97.asn3.housemate.command;
 
-import cscie97.asn3.housemate.model.HouseMateModel;
-import cscie97.asn3.housemate.model.HouseMateModelFactory;
+import cscie97.asn3.housemate.command.door.RoomDoorOpenCommand;
+import cscie97.asn3.housemate.command.light.RoomLightsOnCommand;
+import cscie97.asn3.housemate.component.HouseMateModel;
+import cscie97.asn3.housemate.component.HouseMateModelFactory;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 import cscie97.asn3.housemate.model.IOTDevices.Ava;
-import cscie97.asn3.housemate.model.ServiceInterface;
+import cscie97.asn3.housemate.component.ServiceInterface;
 
 import java.util.List;
 
@@ -25,9 +27,11 @@ public class AvaCommand implements Command {
             String[] tokens = stimulus.split(" ");
             if(stimulus.equals("lights on")){
                 ava.getLocationPair();
-                model.turnOnAllLights(model.findApplianceByType(ava.getLocationPair(), "light", ""));
+                Command com = new RoomLightsOnCommand(model.findApplianceByType(ava.getLocationPair(), "light", ""));
+                com.execute();
             }else if(stimulus.equals("open door")){
-                model.openDoors(model.findApplianceByType(ava.getLocationPair(), "door", ""));
+                Command com = new RoomDoorOpenCommand(model.findApplianceByType(ava.getLocationPair(), "door", ""));
+                com.execute();
             }
             else if(tokens.length == 3 && tokens[0].equals("where") && tokens[1].equals("is")){
                 model.getQueryEngine().executeQuery(tokens[2] + " is_in " + "?");
@@ -41,4 +45,6 @@ public class AvaCommand implements Command {
                 model.getQueryEngine().executeQuery(stimulus);
             }
     }
+
+
 }

@@ -1,8 +1,10 @@
-package cscie97.asn3.housemate.controller.command;
+package cscie97.asn3.housemate.command;
 
-import cscie97.asn3.housemate.model.HouseMateModelFactory;
+import cscie97.asn3.housemate.component.HouseMateModelFactory;
+import cscie97.asn3.housemate.model.IOTDevices.Ava;
 import cscie97.asn3.housemate.model.IOTDevices.Refrigerator;
-import cscie97.asn3.housemate.model.ServiceInterface;
+import cscie97.asn3.housemate.model.IOTDevices.Sensor;
+import cscie97.asn3.housemate.component.ServiceInterface;
 
 import java.util.Scanner;
 
@@ -19,11 +21,17 @@ public class BeerCountLowCommand implements Command {
     @Override
     public void execute() {
         System.out.println("beer Count has changed");
-        model.avaInRoomSpeak(refrigerator.getLocationPair(), "Would you like more beer?", "");
+        avaInRoomSpeak(refrigerator.getLocationPair(), "Would you like more beer?", "");
         beerRequestPrompt();
     }
 
 
+    public void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken){
+        for(Sensor sen :model.findSensorInRoom(avaLocation, "Ava", authToken)) {
+            ((Ava)sen).speak(broadCastMessage);
+        };
+
+    }
     public void beerRequestPrompt(){
         Scanner in = new Scanner(System.in);
         String s;

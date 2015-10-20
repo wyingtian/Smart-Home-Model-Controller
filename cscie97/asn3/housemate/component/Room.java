@@ -1,4 +1,4 @@
-package cscie97.asn3.housemate.model;
+package cscie97.asn3.housemate.component;
 
 import java.util.HashMap;
 

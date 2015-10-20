@@ -33,16 +33,7 @@ set sensor house1:living_room2:ava2 status LISTENING value "joe_smith says: 'ope
 set sensor house1:living_room2:ava2 status LISTENING value "joe_smith says: 'thermostat temperature 69'"
 set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'thermostat temperature 70'"
 
-# Ava hears Joe Smith give command to turn the oven on
-set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven power on'"
-# Ava hears Joe Smith give command to set the oven temperature to 350 degrees
-set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven temperature 350'"
-# Ava hears Joe Smith give command to set the oven time to cook to 45 minutes
-set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven timetocook 45'"
-# Ava hears Joe Smith give command to close the window
-set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'close window'"
-# Ava hears Joe Smith ask question "where is Rover?"
-set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'where is rover'"
+
 
 
 define appliance oven1 type oven room house1:dining_room1
@@ -52,8 +43,8 @@ set appliance house1:dining_room1:oven1 status timetocook value 0
 show appliance house1:dining_room1:oven1 status power
 show appliance house1:dining_room1:refrigerator1 status beercount
 define appliance refrigerator1 type refrigerator room house1:dining_room1
-set appliance house1:dining_room1:refrigerator1 status beercount value 3
-show appliance house1:dining_room1:refrigerator1 status beercount
+#set appliance house1:dining_room1:refrigerator1 status beercount value 3
+#show appliance house1:dining_room1:refrigerator1 status beercount
 define occupant joe_smith type adult
 define occupant jill_smith type adult
 add occupant joe_smith to_house house1
@@ -102,3 +93,13 @@ set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'lig
 set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'open door'"
 set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'thermostat temperature 70'"
 
+# Ava hears Joe Smith give command to turn the oven on
+set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven power on'"
+# Ava hears Joe Smith give command to set the oven temperature to 350 degrees
+set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven temperature 350'"
+# Ava hears Joe Smith give command to set the oven time to cook to 45 minutes
+set sensor house1:kitchen1:ava2 status LISTENING value "joe_smith says: 'oven timetocook 45'"
+# Ava hears Joe Smith give command to close the window
+set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'close window'"
+# Ava hears Joe Smith ask question "where is Rover?"
+set sensor house1:dining_room1:ava2 status LISTENING value "joe_smith says: 'where is rover'"

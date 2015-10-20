@@ -1,6 +1,6 @@
 package cscie97.asn3.housemate.model.IOTDevices;
 
-import cscie97.asn3.housemate.model.Room;
+import cscie97.asn3.housemate.component.Room;
 /**
  * TV class
  * @author ying

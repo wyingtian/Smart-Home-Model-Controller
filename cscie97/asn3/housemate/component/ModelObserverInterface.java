@@ -1,4 +1,4 @@
-package cscie97.asn3.housemate.controller;
+package cscie97.asn3.housemate.component;
 
 import cscie97.asn3.housemate.model.IOTDevices.Sensor;
 

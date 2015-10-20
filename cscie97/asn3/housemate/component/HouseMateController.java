@@ -1,27 +1,18 @@
-package cscie97.asn3.housemate.controller;
-
-import cscie97.asn3.housemate.controller.command.*;
-import cscie97.asn3.housemate.model.*;
+package cscie97.asn3.housemate.component;
+import cscie97.asn3.housemate.command.CommandFactory;
 import cscie97.asn3.housemate.model.IOTDevices.*;
-import cscie97.asn3.housemate.model.exception.SensorNotFoundException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 /**
  * Created by ying on 10/10/15.
  */
 
-public class HouseMateController implements ModelObserverInterface , Observer{
+public class HouseMateController implements ModelObserverInterface, Observer{
     Observable observable;
-
-
     HouseMateModel model = HouseMateModel.getInstance();
-
-
 //    StringBuilder line;
 //    Importer i = new Importer();
 //    QueryEngine q = new QueryEngine();

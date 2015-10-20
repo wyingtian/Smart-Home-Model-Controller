@@ -1,6 +1,6 @@
 package cscie97.asn3.housemate.model.exception;
 
-import cscie97.asn3.housemate.model.House;
+import cscie97.asn3.housemate.component.House;
 
 public class RoomNotFoundException extends Exception {
 

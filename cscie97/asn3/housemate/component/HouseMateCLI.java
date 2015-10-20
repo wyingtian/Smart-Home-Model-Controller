@@ -1,7 +1,4 @@
-package cscie97.asn3.housemate.model;
-
-import cscie97.asn3.housemate.controller.HouseMateController;
-import cscie97.asn3.housemate.controller.HouseMateControllerFactory;
+package cscie97.asn3.housemate.component;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

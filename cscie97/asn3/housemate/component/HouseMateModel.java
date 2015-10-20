@@ -1,10 +1,7 @@
-package cscie97.asn3.housemate.model;
+package cscie97.asn3.housemate.component;
 import cscie97.asn1.knowledge.engine.Importer;
 import cscie97.asn1.knowledge.engine.KnowledgeGraph;
 import cscie97.asn1.knowledge.engine.QueryEngine;
-import cscie97.asn3.housemate.controller.HouseMateController;
-import cscie97.asn3.housemate.controller.HouseMateControllerFactory;
-import cscie97.asn3.housemate.controller.command.*;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 import cscie97.asn3.housemate.model.IOTDevices.Ava;
 import cscie97.asn3.housemate.model.IOTDevices.Camera;
@@ -28,9 +25,6 @@ import cscie97.asn3.housemate.model.exception.HouseNotFoundException;
 import cscie97.asn3.housemate.model.exception.RoomNotFoundException;
 import cscie97.asn3.housemate.model.exception.SensorNotFoundException;
 import java.util.*;
-import java.util.Observable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class is a singleton class perform define, show, set, add command 
@@ -639,16 +633,7 @@ public class HouseMateModel  extends ServiceInterface {
 		return appList;
 	}
 
-	public void openDoors(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no doors in this room");
-			return;
-		}
-		for(Appliance app: list){
-			DoorOpenCommand com = new DoorOpenCommand((Door)app);
-			com.execute();
-		}
-	}
+
 
 	public List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken){
 		List<Appliance> appListInHouse = new ArrayList<>();
@@ -688,78 +673,89 @@ public class HouseMateModel  extends ServiceInterface {
 		}
 		return sensorListInRoom;
 	}
-	public void turnOnLightsInHouse(String houseName,String authToken){
-		for(Appliance light :findApplianceInHouse(houseName, "light", authToken)){
-			light.changeStatus("power","on");
-		};
 
-	}
+//	public void openDoors(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no doors in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			DoorOpenCommand com = new DoorOpenCommand((Door)app);
+//			com.execute();
+//		}
+//	}
+//	public void turnOnLightsInHouse(String houseName,String authToken){
+//		for(Appliance light :findApplianceInHouse(houseName, "light", authToken)){
+//			light.changeStatus("power","on");
+//		}
+//
+//	}
 
-	public void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken){
-		for(Sensor sen :findSensorInRoom(avaLocation, "Ava", authToken)) {
-			((Ava)sen).speak(broadCastMessage);
-		};
-
-	}
-	public void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken){
-		for(Sensor sen :findSensorInHouse(houseName, "Ava", authToken)) {
-			((Ava)sen).speak(broadCastMessage);
-		};
-
-	}
-
-	public void turnOnAllLights(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no lights in this room");
-			return;
-		}
-		for(Appliance app: list){
-			LightOnCommand com = new LightOnCommand((Light)app);
-			com.execute();
-		}
-	}
-	public void turnOffAllLights(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no lights in this room");
-			return;
-		}
-		for(Appliance app: list){
-			LightOffCommand com = new LightOffCommand((Light)app);
-			com.execute();
-		}
-	}
-
-	public void dimmerAllLights(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no lights in this room");
-			return;
-		}
-		for(Appliance app: list){
-			LightDimmerCommand com = new LightDimmerCommand((Light)app);
-			com.execute();
-			app.showStatus("intensity");
-		}
-	}
-	public void coolerThermostat(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no thermostat in this room");
-			return;
-		}
-		for(Appliance app: list){
-			ThermostatCoolerCommand com = new ThermostatCoolerCommand((Thermostat)app);
-			com.execute();
-			app.showStatus("temperature");
-		}
-	}
-	public void warmerThermostat(List<Appliance> list){
-		if(list.isEmpty()){
-			System.out.println("no thermostat in this room");
-			return;
-		}
-		for(Appliance app: list){
-			ThermostatWarmerCommand com = new ThermostatWarmerCommand((Thermostat)app);
-			com.execute();
-			app.showStatus("temperature");
-		}
-	}
+//	public void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken){
+//		for(Sensor sen :findSensorInRoom(avaLocation, "Ava", authToken)) {
+//			((Ava)sen).speak(broadCastMessage);
+//		};
+//
+//	}
+//	public void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken){
+//		for(Sensor sen :findSensorInHouse(houseName, "Ava", authToken)) {
+//			((Ava)sen).speak(broadCastMessage);
+//		};
+//
+//	}
+//
+//	public void turnOnAllLights(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no lights in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			LightOnCommand com = new LightOnCommand((Light)app);
+//			com.execute();
+//		}
+//	}
+//	public void turnOffAllLights(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no lights in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			LightOffCommand com = new LightOffCommand((Light)app);
+//			com.execute();
+//		}
+//	}
+//
+//	public void dimmerAllLights(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no lights in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			LightDimmerCommand com = new LightDimmerCommand((Light)app);
+//			com.execute();
+//			app.showStatus("intensity");
+//		}
+//	}
+//	public void coolerThermostat(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no thermostat in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			ThermostatCoolerCommand com = new ThermostatCoolerCommand((Thermostat)app);
+//			com.execute();
+//			app.showStatus("temperature");
+//		}
+//	}
+//	public void warmerThermostat(List<Appliance> list){
+//		if(list.isEmpty()){
+//			System.out.println("no thermostat in this room");
+//			return;
+//		}
+//		for(Appliance app: list){
+//			ThermostatWarmerCommand com = new ThermostatWarmerCommand((Thermostat)app);
+//			com.execute();
+//			app.showStatus("temperature");
+//		}
+//	}
 }

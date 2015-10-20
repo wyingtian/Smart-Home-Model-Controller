@@ -1,9 +1,8 @@
 package cscie97.asn3.housemate.model.IOTDevices;
 
-import java.util.HashSet;
 import java.util.Scanner;
 
-import cscie97.asn3.housemate.model.Room;
+import cscie97.asn3.housemate.component.Room;
 
 /**
  * abstract class for devices
@@ -50,7 +49,6 @@ public abstract class Appliance extends IOTDevice {
 	 * @param status
 	 */
 	public abstract void showStatus(String status);
-
 	/**
 	 * set the inital status
 	 */

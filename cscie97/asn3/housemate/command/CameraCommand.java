@@ -1,8 +1,13 @@
-package cscie97.asn3.housemate.controller.command;
+package cscie97.asn3.housemate.command;
 
-import cscie97.asn3.housemate.model.HouseMateModelFactory;
+import cscie97.asn3.housemate.command.Thermostat.RoomThermostatCoolerCommand;
+import cscie97.asn3.housemate.command.Thermostat.RoomThermostatWarmerCommand;
+import cscie97.asn3.housemate.command.light.RoomLightsDimmerCommand;
+import cscie97.asn3.housemate.command.light.RoomLightsOffCommand;
+import cscie97.asn3.housemate.command.light.RoomLightsOnCommand;
+import cscie97.asn3.housemate.component.HouseMateModelFactory;
 import cscie97.asn3.housemate.model.IOTDevices.Camera;
-import cscie97.asn3.housemate.model.ServiceInterface;
+import cscie97.asn3.housemate.component.ServiceInterface;
 
 /**
  * Created by ying on 10/17/15.
@@ -51,14 +56,19 @@ public class CameraCommand implements Command {
     }
 
     public void sleepProcedure(String roomLocationPair,String auth_token){
-        model.dimmerAllLights(model.findApplianceByType(roomLocationPair, "light", auth_token));
+        Command com1 = new RoomLightsDimmerCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
+        com1.execute();
     }
     public void detectedProcedure(String roomLocationPair,String auth_token){
-        model.turnOnAllLights(model.findApplianceByType(roomLocationPair, "light", auth_token));
-        model.warmerThermostat(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+        Command com1 = new RoomLightsOnCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
+        Command com2 = new RoomThermostatWarmerCommand(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+        com1.execute();
+        com2.execute();
     }
     public void leavingProcedure(String roomLocationPair,String auth_token){
-        model.turnOffAllLights(model.findApplianceByType(roomLocationPair, "light", auth_token));
-        model.coolerThermostat(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+        Command com1 = new RoomLightsOffCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
+        Command com2 = new RoomThermostatCoolerCommand(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+        com1.execute();
+        com2.execute();
     }
 }

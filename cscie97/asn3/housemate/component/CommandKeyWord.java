@@ -1,4 +1,4 @@
-package cscie97.asn3.housemate.model;
+package cscie97.asn3.housemate.component;
 
 /**
  * enum type of the command keyword
@@ -9,16 +9,15 @@ package cscie97.asn3.housemate.model;
 public enum CommandKeyWord {
 	DEFINE("define"), ADD("add"), SET("set"), SHOW("show");
 
-	private String CommkeyWord;
+	private String ComKeyWord;
 
 	private CommandKeyWord(String value) {
-		CommkeyWord = value;
+		ComKeyWord = value;
 	}
 
 	public String getKeyWord() {
-		return CommkeyWord;
+		return ComKeyWord;
 	}
-
 	/**
 	 * check if the command has the keyword
 	 * @param test
@@ -31,7 +30,6 @@ public enum CommandKeyWord {
 				return true;
 			}
 		}
-
 		return false;
 	}
 

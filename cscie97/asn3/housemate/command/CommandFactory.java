@@ -1,7 +1,5 @@
-package cscie97.asn3.housemate.controller.command;
+package cscie97.asn3.housemate.command;
 
-import cscie97.asn3.housemate.controller.HouseMateControllerFactory;
-import cscie97.asn3.housemate.model.HouseMateModelFactory;
 import cscie97.asn3.housemate.model.IOTDevices.*;
 
 import java.util.Observable;
@@ -21,13 +19,15 @@ public class CommandFactory {
             // System.out.println(theSensor.showStatus());
         } else if(sensorType.equals("camera")){
             command  = new CameraCommand(statusName,value,(Camera)theSensor);
-
             // executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
         }else if(sensorType.equals("smoke_detector")){
             theSensor.setStatus(statusName,value);
             if(theSensor.getValue().equals("FIRE")){
                 command= new SmokeDetectorCommand(statusName,value,(SmokeDetector)theSensor);
-            }
+            }else {
+                command = new SensorNoOpCommand(theSensor);}
+        }else {
+            command = new SensorNoOpCommand(theSensor);
         }
         return command;
     }
@@ -42,17 +42,17 @@ public class CommandFactory {
 //                model.avaInRoomSpeak(theAppliance.getLocationPair(), "Would you like more beer?", "");
 //                beerRequestPrompt();
             }else{
-                command = new NoOpCommand(theAppliance,statusName);
+                command = new ApplianceNoOpCommand(theAppliance,statusName);
             }
         }else if(obs instanceof Oven){
             theAppliance = (Oven)obs;
             if( (Integer.parseInt(((Oven)theAppliance).getTimeToCook()) == 0)){
                     command = new OvenFoodReadyCommand(theAppliance,statusName);
             }else{
-                command = new NoOpCommand(theAppliance,statusName);
+                command = new ApplianceNoOpCommand(theAppliance,statusName);
             }
         }else {
-            command = new NoOpCommand(theAppliance,statusName);
+            command = new ApplianceNoOpCommand(theAppliance,statusName);
         }
         return command;
     }

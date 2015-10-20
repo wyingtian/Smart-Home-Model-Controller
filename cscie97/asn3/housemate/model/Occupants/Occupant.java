@@ -2,7 +2,7 @@ package cscie97.asn3.housemate.model.Occupants;
 
 import java.util.HashMap;
 
-import cscie97.asn3.housemate.model.House;
+import cscie97.asn3.housemate.component.House;
 
 /**
  * This is the Occupant class that represents the Occupant in one Home

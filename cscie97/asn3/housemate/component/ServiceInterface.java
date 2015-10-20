@@ -1,4 +1,4 @@
-package cscie97.asn3.housemate.model;
+package cscie97.asn3.housemate.component;
 
 
 import cscie97.asn1.knowledge.engine.Importer;
@@ -22,14 +22,16 @@ public abstract class ServiceInterface extends Observable {
 	 * @param tokens the String[] is the tokenized command
 	 * @param authToken for access control
 	 */
+	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);
 	 public abstract void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken);
 	public abstract Importer getImporter();
 	public abstract QueryEngine getQueryEngine();
 	public abstract KnowledgeGraph getKnowledgeGraph();
 	public abstract void defineHouse(String houseName, String authToken);
-	public abstract void turnOnLightsInHouse(String houseName,String authToken);
-	public abstract void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken);
-	public abstract void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken);
+//	public abstract void turnOnLightsInHouse(String houseName,String authToken);
+//	public abstract void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken);
+//	public abstract void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken);
+//	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);
 	/**
 	 * Create room object
 	 * @param tokens
@@ -127,8 +129,9 @@ public abstract class ServiceInterface extends Observable {
 	 * @param sensorName in the form of<houseName>:<roomName>:<sensorName>
 	 * @return
 	 */
+	public abstract List<Sensor> findSensorInRoom(String roomName, String sensorType, String authToken);
 	public abstract Sensor findSensor(String sensorName,String authToken);
-
+	public abstract List<Sensor> findSensorInHouse(String houseName, String sensorType, String authToken);
 	/**
 	 * find the sensor based on the location
 	 * @param applianceName in the form of <houseName>:<roomName>:<applianceName>
@@ -136,10 +139,10 @@ public abstract class ServiceInterface extends Observable {
 	 */
 	public abstract Appliance findAppliance(String applianceName,String authToekn);
 	public abstract List<Appliance> findApplianceByType(String location, String type, String authToken);
-	public abstract void openDoors(List<Appliance> list);
-	public abstract void turnOnAllLights(List<Appliance> list);
-	public abstract void turnOffAllLights(List<Appliance> list);
-	public abstract void dimmerAllLights(List<Appliance> list);
-	public abstract void coolerThermostat(List<Appliance> list);
-	public abstract void warmerThermostat(List<Appliance> list);
+//	public abstract void openDoors(List<Appliance> list);
+//	public abstract void turnOnAllLights(List<Appliance> list);
+//	public abstract void turnOffAllLights(List<Appliance> list);
+//	public abstract void dimmerAllLights(List<Appliance> list);
+//	public abstract void coolerThermostat(List<Appliance> list);
+//	public abstract void warmerThermostat(List<Appliance> list);
 }
