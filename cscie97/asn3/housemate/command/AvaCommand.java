@@ -11,17 +11,22 @@ import cscie97.asn3.housemate.component.ServiceInterface;
 import java.util.List;
 
 /**
- * Created by ying on 10/17/15.
+ * AvaCommand is executed when ava status changes
+ * @author ying
  */
 public class AvaCommand implements Command {
     String stimulus;
     Ava ava;
     ServiceInterface model;
+
+
     public AvaCommand(String stimulus, Ava ava) {
         this.stimulus = stimulus;
         this.ava = ava;
         model = HouseMateModelFactory.getInstance();
     }
+
+
     @Override
     public void execute() {
             String[] tokens = stimulus.split(" ");
@@ -45,6 +50,5 @@ public class AvaCommand implements Command {
                 model.getQueryEngine().executeQuery(stimulus);
             }
     }
-
 
 }

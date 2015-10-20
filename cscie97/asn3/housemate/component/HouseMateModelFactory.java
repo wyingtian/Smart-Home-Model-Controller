@@ -1,7 +1,8 @@
 package cscie97.asn3.housemate.component;
 
 /**
- * Created by ying on 10/17/15.
+ * Factory for accessing the HouseMateModel singleton instance
+ * @author ying
  */
 public class HouseMateModelFactory {
 

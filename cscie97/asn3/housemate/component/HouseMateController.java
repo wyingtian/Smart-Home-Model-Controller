@@ -4,15 +4,75 @@ import cscie97.asn3.housemate.model.IOTDevices.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
- * Created by ying on 10/10/15.
+ *The House Mate Controller Service use the interface of the House Mate Model Service
+ *to monitor the status the IOT devices.
+ * @author ying
  */
+public class HouseMateController implements ModelObserverInterface{
 
-public class HouseMateController implements ModelObserverInterface, Observer{
-    Observable observable;
-    HouseMateModel model = HouseMateModel.getInstance();
+    private  static HouseMateController theController = null;
+    private HouseMateController(){
+
+    }
+
+    /**
+     * HouseMateController is a singleton, this method
+     * return the instance of itself
+     * @return  the instance of itself
+     */
+    public static  HouseMateController getInstance(){
+        if (theController == null) {
+            theController = new HouseMateController();
+        }
+        return theController;
+    }
+
+    /**
+     * House Mate Controller is an observer implements ModelObserverInterface,
+     * this is to update a sensor settings when it observed changes.
+     * @param theSensor
+     * @param statusName
+     * @param value
+     * @param tokens
+     * @param authToken
+     */
+    public void updateSensor(Sensor theSensor, String statusName, String value, String[] tokens, String authToken){
+            String sensorType;
+            sensorType = theSensor.getType();
+            CommandFactory.createSensorCommand(theSensor, sensorType, statusName, value, tokens).execute();
+    }
+
+    /**
+     * House Mate Controller is an observer implements ModelObserverInterface,
+     * this is to update a appliance settings and take actions
+     * based on the trigger when it observed changes.
+     * @param obs
+     * @param arg
+     */
+    public void updateAppliance(Observable obs, String arg) {
+           CommandFactory.createApplianceCommand(obs,arg).execute();
+    }
+
+
+    public static void main(String args[]){
+        String inputName = args[0];
+        try {
+            HouseMateCLI.importConfigFile(inputName);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + inputName);
+        } catch (IOException e) {
+            System.out.println("Unable to read file: "+inputName);
+        }
+    }
+
+//    @Override
+//    public void update(Observable o, Object arg) {
+//
+//    }
+    //Observable observable;
+    // ServiceInterface model = HouseMateModel.getInstance();
 //    StringBuilder line;
 //    Importer i = new Importer();
 //    QueryEngine q = new QueryEngine();
@@ -20,35 +80,14 @@ public class HouseMateController implements ModelObserverInterface, Observer{
 //        this.observable = observable;
 //        observable.addObserver(this);
 //    }
-    private  static HouseMateController theController = null;
-    private HouseMateController(){
-//        this.observable = observable;
+
+    //        this.observable = observable;
 //        observable.addObserver(this);
 
-    }
-
-    public static  HouseMateController getInstance(){
-
-        if (theController == null) {
-            theController = new HouseMateController();
-        }
-        return theController;
-    }
 
 
-    public void updateSensor(Sensor theSensor, String statusName, String value, String[] tokens, String authToken){
-            String sensorType;
-            sensorType = theSensor.getType();
-            CommandFactory.createSensorCommand(theSensor, sensorType, statusName, value, tokens).execute();
-    }
 
-
-       @Override
-    public void updateAppliance(Observable obs, String arg) {
-
-            Appliance theAppliance;
-           CommandFactory.createApplianceCommand(obs,arg).execute();
-//
+    //
 //        if(obs instanceof Refrigerator){
 //
 //           theAppliance = (Refrigerator)obs;
@@ -67,26 +106,6 @@ public class HouseMateController implements ModelObserverInterface, Observer{
 //                model.avaInRoomSpeak(theAppliance.getLocationPair(),"Food is Ready","");
 //            }
 //        }
-
-    }
-
-    public static void main(String args[]){
-       // HouseMateController con= HouseMateControllerFactory.getInstance();
-        String inputName = args[0];
-        try {
-            HouseMateCLI.importConfigFile(inputName);
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + inputName);
-        } catch (IOException e) {
-            System.out.println("Unable to read file: "+inputName);
-        }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
-
 
 //
 //    public void createCommand(String deviceName, String deviceStatusName, String deviceStatusValue, String[] tokens,Appliance app; String authToken){

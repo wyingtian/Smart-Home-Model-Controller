@@ -9,8 +9,10 @@ import cscie97.asn3.housemate.component.HouseMateModelFactory;
 import cscie97.asn3.housemate.model.IOTDevices.Camera;
 import cscie97.asn3.housemate.component.ServiceInterface;
 
+
 /**
- * Created by ying on 10/17/15.
+ * CameraCommand is executed when camera status changes
+ * @author ying
  */
 
 public class CameraCommand implements Command {
@@ -55,19 +57,36 @@ public class CameraCommand implements Command {
         }
     }
 
-    public void sleepProcedure(String roomLocationPair,String auth_token){
-        Command com1 = new RoomLightsDimmerCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
+    /**
+     * actions when occupant is asleep
+     * @param roomLocationPair
+     * @param authToken
+     */
+    public void sleepProcedure(String roomLocationPair,String authToken){
+        Command com1 = new RoomLightsDimmerCommand(model.findApplianceByType(roomLocationPair, "light", authToken));
         com1.execute();
     }
-    public void detectedProcedure(String roomLocationPair,String auth_token){
-        Command com1 = new RoomLightsOnCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
-        Command com2 = new RoomThermostatWarmerCommand(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+
+    /**
+     * actions when occupant enters the room
+     * @param roomLocationPair
+     * @param authToken
+     */
+    public void detectedProcedure(String roomLocationPair,String authToken){
+        Command com1 = new RoomLightsOnCommand(model.findApplianceByType(roomLocationPair, "light", authToken));
+        Command com2 = new RoomThermostatWarmerCommand(model.findApplianceByType(roomLocationPair, "thermostat", authToken));
         com1.execute();
         com2.execute();
     }
-    public void leavingProcedure(String roomLocationPair,String auth_token){
-        Command com1 = new RoomLightsOffCommand(model.findApplianceByType(roomLocationPair, "light", auth_token));
-        Command com2 = new RoomThermostatCoolerCommand(model.findApplianceByType(roomLocationPair, "thermostat", auth_token));
+
+    /**
+     * actions when occupant leaves the room
+     * @param roomLocationPair
+     * @param authToken
+     */
+    public void leavingProcedure(String roomLocationPair,String authToken){
+        Command com1 = new RoomLightsOffCommand(model.findApplianceByType(roomLocationPair, "light", authToken));
+        Command com2 = new RoomThermostatCoolerCommand(model.findApplianceByType(roomLocationPair, "thermostat", authToken));
         com1.execute();
         com2.execute();
     }

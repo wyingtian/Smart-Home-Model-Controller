@@ -51,7 +51,7 @@ public class Room  {
 
 	/**
 	 * check if the sensor exsist in the room
-	 * @param String sensor 
+	 * @param  sensor
 	 * @return if the room has the sensor
 	 */
 	public boolean hasSensor(String sensor){
@@ -70,7 +70,7 @@ public class Room  {
 	}
 	/**
 	 * check if the appliance exsist in the room
-	 * @param String a 
+	 * @param
 	 * @return boolean if the room has the appliance
 	 */
 	public boolean hasAppliance(String app){
@@ -78,7 +78,7 @@ public class Room  {
 	}
 	/**
 	 * get the appliance  if it exsist
-	 * @param string app
+	 * @param  app
 	 * @return the appliance object
 	 */
 	public Appliance getAppliance(String app){
@@ -88,7 +88,7 @@ public class Room  {
 			return null;
 	}
 	/**
-	 * show room infor mation
+	 * show room information
 	 * @return the string of room info
 	 */
 	
@@ -112,7 +112,7 @@ public class Room  {
 	}
 	
 	/**
-	 *  show the Apppiance that the room has, and their status
+	 *  show the appliance that the room has, and their status
 	 */
 		public void showAppInRoom(){
 			System.out.println("*****************************************");

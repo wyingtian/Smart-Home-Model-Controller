@@ -31,7 +31,7 @@ public class House {
 	 * if the house has the room room, check if the house has the room based on
 	 * room name;
 	 * 
-	 * @param String
+	 * @param
 	 * @return boolean
 	 */
 	public boolean hasRoom(String room) {
@@ -41,7 +41,7 @@ public class House {
 	/**
 	 * return the Room Object if it exists, else return null;
 	 * 
-	 * @param String
+	 * @param
 	 * @return room object;
 	 */
 	public Room getRoom(String room) {
@@ -62,7 +62,7 @@ public class House {
 	/**
 	 * addoccupant to the House
 	 * 
-	 * @param Occupant
+	 * @param
 	 */
 	public void addOccupant(Occupant occ) {
 

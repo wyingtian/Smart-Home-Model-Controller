@@ -10,8 +10,10 @@ import cscie97.asn3.housemate.component.ServiceInterface;
 import java.util.List;
 
 /**
- * Created by ying on 10/18/15.
+ * SmokeDetectorCommand is executed when smokeDetected set to fire
+ * @author ying
  */
+
 
 public class SmokeDetectorCommand implements Command {
     String mode;
@@ -41,6 +43,12 @@ public class SmokeDetectorCommand implements Command {
         System.out.println("Calling 911");
     }
 
+    /**
+     * Ava broadcast fire message in all rooms
+     * @param houseName
+     * @param broadCastMessage
+     * @param authToken
+     */
     public void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken){
         for(Sensor sen :model.findSensorInHouse(houseName, "Ava", authToken)) {
             ((Ava)sen).speak(broadCastMessage);

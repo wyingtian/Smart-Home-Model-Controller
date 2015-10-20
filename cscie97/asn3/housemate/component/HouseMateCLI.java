@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * This is to proviede command line interface and file input.
+ * This is to provide command line interface and file input.
  * 
  * @author ying
  *

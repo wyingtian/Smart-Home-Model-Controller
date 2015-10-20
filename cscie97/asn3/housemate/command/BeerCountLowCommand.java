@@ -9,11 +9,13 @@ import cscie97.asn3.housemate.component.ServiceInterface;
 import java.util.Scanner;
 
 /**
- * Created by ying on 10/19/15.
+ * the command for when the beer count is low
+ * @author ying
  */
 public class BeerCountLowCommand implements Command {
     Refrigerator refrigerator;
     ServiceInterface model;
+
     public BeerCountLowCommand(Refrigerator refrigerator){
         this.refrigerator = refrigerator;
         model = HouseMateModelFactory.getInstance();
@@ -25,13 +27,22 @@ public class BeerCountLowCommand implements Command {
         beerRequestPrompt();
     }
 
-
+    /**
+     * use the ava in the room that same as the room the fridge is in to speak
+     * @param avaLocation
+     * @param broadCastMessage
+     * @param authToken
+     */
     public void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken){
         for(Sensor sen :model.findSensorInRoom(avaLocation, "Ava", authToken)) {
             ((Ava)sen).speak(broadCastMessage);
         };
 
     }
+
+    /**
+     * ask if the occupant want more beer
+     */
     public void beerRequestPrompt(){
         Scanner in = new Scanner(System.in);
         String s;
@@ -42,7 +53,6 @@ public class BeerCountLowCommand implements Command {
 
         }else if(s.equals("no")){
             System.out.println("Ok, no beer for you :(");
-
         }else beerRequestPrompt();
     }
 }

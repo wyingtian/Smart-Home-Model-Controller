@@ -32,24 +32,30 @@ import java.util.*;
  * @author ying
  *
  */
-public class HouseMateModel  extends ServiceInterface {
+public class HouseMateModel  implements ServiceInterface {
 
 	private static final HouseMateModel MODEL = new HouseMateModel();
 	KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
 	Importer importer = new Importer();
 	QueryEngine queryEngine = new QueryEngine();
-    HouseMateController controller ;
 
 	HashMap<String, House> AllHouseMap;
 	HashMap<String, Occupant> allOccupantMap;
+
+	/**
+	 * constructor it creates two map for house and occupants
+	 */
+	private HouseMateModel() {
+		AllHouseMap = new HashMap<String, House>();
+		allOccupantMap = new HashMap<String, Occupant>();
+	}
+
 	public HashMap<String, House> getHomeMap() {
 		return AllHouseMap;
 	}
-
 	public HashMap<String, Occupant> getAllOccupantMap() {
 		return allOccupantMap;
 	}
-
 	public  KnowledgeGraph getKnowledgeGraph(){
 		return this.knowledgeGraph;
 	}
@@ -59,16 +65,20 @@ public class HouseMateModel  extends ServiceInterface {
 	public  QueryEngine getQueryEngine(){
 		return this.queryEngine;
 	}
-	private HouseMateModel() {
-		AllHouseMap = new HashMap<String, House>();
-		allOccupantMap = new HashMap<String, Occupant>();
-		//controller = HouseMateControllerFactory.getInstance();
-	}
 
+	/**
+	 * The singleton to return the only instance
+	 * @return the only instance of HouseMateModel is self
+	 */
 	public static HouseMateModel getInstance() {
 		return MODEL;
 	}
 
+	/**
+	 * check if a string is a appliance type
+	 * @param type
+	 * @return
+	 */
 	public static boolean isApplianceType(String type){
 		HashSet<String> ApplianceTypeSet = new HashSet<String>();
 		ApplianceTypeSet.add("door");
@@ -81,17 +91,16 @@ public class HouseMateModel  extends ServiceInterface {
 		ApplianceTypeSet.add("Window");
 		return ApplianceTypeSet.contains(type);
 	}
+
 	/**
-	 * This method create a house object
+	 *  This method create a house object
 	 * add added the house object to HouseMateModel allHouseMap.
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 * @param houseName
+	 * @param authToken
 	 */
 	@Override
 	public void defineHouse(String houseName, String authToken) {
 		// check the format of the input, the length has to be 3;
-
-
 			if (AllHouseMap.containsKey(houseName)) {
 				// if the name already exist
 				System.out.println(houseName + " this Name exists ");
@@ -105,14 +114,16 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 	/**
-	 * Create room object
-	 * @param tokens
+	 *  Create room object
+	 * @param roomName
+	 * @param floor
+	 * @param type
+	 * @param houseName
 	 * @param authToken
 	 */
 	@Override
 	public void defineRoom(String roomName, String floor,  String type, String houseName, String authToken) {
 		// check if the the format is right
-
 
 			// try to find the house it belongs to
 			if (!AllHouseMap.containsKey(houseName)){
@@ -136,12 +147,13 @@ public class HouseMateModel  extends ServiceInterface {
 				}
 			}
 	}
-	/**
-	 * create occupant object
-	* @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
-	 */
 
+	/**
+	 *  create occupant object
+	 * @param occuName
+	 * @param occuType
+	 * @param authToken
+	 */
 	@Override
 	public void defineOccupant(String occuName,String occuType, String authToken) {
 
@@ -190,9 +202,10 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 	/**
-	 * add occupant to house
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *  add occupant to house
+	 * @param occName
+	 * @param houseName
+	 * @param authToken
 	 */
 
 	@Override
@@ -340,11 +353,14 @@ public class HouseMateModel  extends ServiceInterface {
 			return null;
 		}
 	}
+
 	/**
-	 *create appliance object
+	 * create appliance object
 	 * Note: appliance is an abstract class, it create its subclass based on input
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 * @param sensorName
+	 * @param sensorType
+	 * @param roomName
+	 * @param authToken
 	 */
 	@Override
 	public void defineSensor(String sensorName,String sensorType,String roomName, String authToken) {
@@ -393,10 +409,11 @@ public class HouseMateModel  extends ServiceInterface {
 	/**
 	 *create appliance object
 	 * Note: appliance is an abstract class, it create its subclass based on input
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 * @param appName
+	 * @param appType
+	 * @param roomName
+	 * @param authToken
 	 */
-
 
 	@Override
 	public void defineAppliance(String appName,String appType,String roomName, String authToken) {
@@ -484,10 +501,11 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 	/**
-	 * show the status of the sensor or appliance 
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *  show the status of the sensor
+	 * @param sensorName
+	 * @param authToken
 	 */
+	@Override
 	public void showSensor(String sensorName, String authToken) {
 			Sensor theSensor;
 			theSensor = findSensor(sensorName, authToken);
@@ -495,6 +513,14 @@ public class HouseMateModel  extends ServiceInterface {
 				System.out.println(theSensor.showStatus());
 			}
 	}
+
+	/**
+	 * show the status of the appliance
+	 * @param appName
+	 * @param statusName
+	 * @param authToken
+	 */
+	@Override
 	public void showApplianceStatus(String appName,String statusName,String authToken){
 		Appliance theApp;
 		theApp = findAppliance(appName, authToken);
@@ -502,6 +528,12 @@ public class HouseMateModel  extends ServiceInterface {
 			theApp.showStatus(statusName);
 		}
 	}
+
+	/**
+	 * show all appliance status
+	 * @param appName
+	 * @param authToken
+	 */
 	public void showAllApplianceStatus(String appName,String authToken){
 		Appliance theApp;
 		theApp = findAppliance(appName, authToken);
@@ -509,10 +541,11 @@ public class HouseMateModel  extends ServiceInterface {
 			theApp.showAllStatus();
 		}
 	}
+
 	/**
-	 * show all the configuration of the house
+	 *  show all the configuration of the house
 	 * including all the rooms and devices and their status
-	 * @param tokens
+	 * @param houseName
 	 * @param authToken
 	 */
 
@@ -525,6 +558,13 @@ public class HouseMateModel  extends ServiceInterface {
 		}
 	}
 
+	/**
+	 * set appliance status based on the appliance name
+	 * @param appName
+	 * @param statusName
+	 * @param value
+	 * @param authToken
+	 */
 	@Override
 	public void setApplianceStatus(String appName, String statusName, String value,String authToken) {
 		Appliance theApp;
@@ -544,9 +584,9 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 	/**
-	 * show all the configuration of the room
+	 *  show all the configuration of the room
 	 * including all the  devices and their status
-	 * @param tokens
+	 * @param roomName
 	 * @param authToken
 	 */
 	@Override
@@ -573,14 +613,14 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 
-
-
 	/**
-	 * set the status of the sensor or appliance
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *  set the status of the sensor or appliance
+	 * @param sensorName
+	 * @param statusName
+	 * @param value
+	 * @param tokens
+	 * @param authToken
 	 */
-
 	public void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken){
 		Sensor theSensor;
 		theSensor = findSensor(sensorName, authToken);
@@ -593,34 +633,13 @@ public class HouseMateModel  extends ServiceInterface {
 			}
 		}
 	}
-//	public void setSensor(String[] tokens, String auth_token) {
-//		Sensor theSensor;
-//		String sensorType;
-//		theSensor = findSensor(tokens[2], auth_token);
-//		if(theSensor != null ){
-//			sensorType = theSensor.getType();
-//			if (sensorType.equals("Ava") ) {
-//				AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-//				avaCom.execute();
-//				// executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
-//				// System.out.println(theSensor.showStatus());
-//			} else if(sensorType.equals("camera")){
-//				CameraCommand camCom = new CameraCommand(tokens[4],tokens[6],(Camera)theSensor);
-//				camCom.execute();
-//				// executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
-//			}
-//		}else{
-//			try {
-//				throw new SensorNotFoundException(tokens[2]+ " is not Found" );
-//			} catch (SensorNotFoundException e) {
-//			}
-//		}
-//	}
+
 	/**
-	 *
-	 * @param location location is in the form of house:room
-	 * @param type      type is the appliance type String
-	 * @return  a list of matching appliance.
+	 * This method find a type of appliance based on the room name and the type of appliance
+	 * @param location
+	 * @param type
+	 * @param authToken
+	 * @return
 	 */
 	public List<Appliance> findApplianceByType(String location, String type, String authToken){
 		List<Appliance> appList = new ArrayList<Appliance>();
@@ -634,7 +653,13 @@ public class HouseMateModel  extends ServiceInterface {
 	}
 
 
-
+	/**
+	 *This method find a type of appliance based on the house name location and the type of appliance
+	 * @param houseName
+	 * @param applianceType
+	 * @param authToken
+	 * @return
+	 */
 	public List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken){
 		List<Appliance> appListInHouse = new ArrayList<>();
 		House house = findHouse(houseName,authToken);
@@ -647,7 +672,13 @@ public class HouseMateModel  extends ServiceInterface {
 		}
 		return appListInHouse;
 	}
-
+	/**
+	 * This method find a type of sensor in a house based on the house name and the type of sensor
+	 * @param houseName
+	 * @param sensorType
+	 * @param authToken
+	 * @return
+	 */
 	public List<Sensor> findSensorInHouse(String houseName, String sensorType, String authToken){
 		List<Sensor> sensorListInHouse = new ArrayList<>();
 		House house = findHouse(houseName,authToken);
@@ -661,6 +692,13 @@ public class HouseMateModel  extends ServiceInterface {
 		return sensorListInHouse;
 	}
 
+	/**
+	 *This method find a type of sensor in a room based on the room name and the type of sensor
+	 * @param roomName
+	 * @param sensorType
+	 * @param authToken
+	 * @return
+	 */
 	public List<Sensor> findSensorInRoom(String roomName, String sensorType, String authToken){
 		List<Sensor> sensorListInRoom = new ArrayList<>();
 		Room room = findRoom(roomName,authToken);
@@ -673,6 +711,7 @@ public class HouseMateModel  extends ServiceInterface {
 		}
 		return sensorListInRoom;
 	}
+}
 
 //	public void openDoors(List<Appliance> list){
 //		if(list.isEmpty()){
@@ -758,4 +797,28 @@ public class HouseMateModel  extends ServiceInterface {
 //			app.showStatus("temperature");
 //		}
 //	}
-}
+
+
+//	public void setSensor(String[] tokens, String auth_token) {
+//		Sensor theSensor;
+//		String sensorType;
+//		theSensor = findSensor(tokens[2], auth_token);
+//		if(theSensor != null ){
+//			sensorType = theSensor.getType();
+//			if (sensorType.equals("Ava") ) {
+//				AvaCommand avaCom = new AvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//				avaCom.execute();
+//				// executeAvaCommand(getAvaCommand(tokens), (Ava) theSensor);
+//				// System.out.println(theSensor.showStatus());
+//			} else if(sensorType.equals("camera")){
+//				CameraCommand camCom = new CameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+//				camCom.execute();
+//				// executeCameraCommand(tokens[4],tokens[6],(Camera)theSensor);
+//			}
+//		}else{
+//			try {
+//				throw new SensorNotFoundException(tokens[2]+ " is not Found" );
+//			} catch (SensorNotFoundException e) {
+//			}
+//		}
+//	}

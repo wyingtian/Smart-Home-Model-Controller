@@ -12,43 +12,71 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 
-public abstract class ServiceInterface extends Observable {
-	public abstract HashMap<String, Occupant> getAllOccupantMap();
-	public abstract HashMap<String, House> getHomeMap();
+/**
+ * This is a service Interface implemented by HouseMateModel to provide methods
+ * to make changes and check status.
+ */
+public interface  ServiceInterface   {
+
 
 	/**
-	 * This method create a house object
-	 * add added the house object to HouseMateModel allHouseMap.
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
-	 */
-	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);
-	 public abstract void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken);
-	public abstract Importer getImporter();
-	public abstract QueryEngine getQueryEngine();
-	public abstract KnowledgeGraph getKnowledgeGraph();
-	public abstract void defineHouse(String houseName, String authToken);
-//	public abstract void turnOnLightsInHouse(String houseName,String authToken);
-//	public abstract void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken);
-//	public abstract void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken);
-//	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);
-	/**
-	 * Create room object
+	 *Set Sensor Status based on sensor name
+	 * @param sensorName
+	 * @param statusName
+	 * @param value
 	 * @param tokens
+	 * @param authToken
+	 */
+	public abstract void setSensor(String sensorName, String statusName, String value, String[] tokens, String authToken);
+
+	/**
+	 *This method return the importer for KG inside the HouseMateModel
+	 * @return Importer
+	 */
+	public abstract Importer getImporter();
+
+	/**
+	 *This method return the QueryEngine for KG inside the HouseMateModel
+	 * @return QueryEngine
+	 */
+	public abstract QueryEngine getQueryEngine();
+
+	/**
+	 *This method return the KG inside the HouseMateModel
+	 * @return KnowledgeGraph
+	 */
+	public abstract KnowledgeGraph getKnowledgeGraph();
+
+	/**
+	 * define house method
+	 * @param houseName
+	 * @param authToken
+	 */
+	public abstract void defineHouse(String houseName, String authToken);
+
+	/**
+	 *define room method
+	 * @param roomName
+	 * @param floor
+	 * @param type
+	 * @param houseName
 	 * @param authToken
 	 */
 	public abstract void defineRoom(String roomName, String floor,  String type, String houseName, String authToken);
 
 	/**
-	 * create occupant object
-	* @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *define occupant method
+	 * @param occuName
+	 * @param occuType
+	 * @param authToken
 	 */
 	public abstract void defineOccupant(String occuName,String occuType, String authToken);
+
 	/**
-	 * add occupant to house
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *add occupant to house
+	 * @param occName
+	 * @param houseName
+	 * @param authToken
 	 */
 	public abstract void addOccupant2House(String occName,String houseName, String authToken);
 
@@ -56,36 +84,36 @@ public abstract class ServiceInterface extends Observable {
 	 * create sensor object
 	 * Note: sensor is an abstract class, it create its subclass based on input,
 	 * roomName is in the form of house:room1;
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 * @param sensorName
+	 * @param sensorType
+	 * @param roomName
+	 * @param authToken
 	 */
 	public abstract void defineSensor(String sensorName,String sensorType,String roomName, String authToken);
-	
+
 	/**
-	 *create appliance object
+	 * create appliance object
 	 * Note: appliance is an abstract class, it create its subclass based on input
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 * @param appName
+	 * @param appType
+	 * @param roomName
+	 * @param authToken
 	 */
 	public abstract void defineAppliance(String appName,String appType,String roomName, String authToken);
 
-//	/**
-//	 * set the status of the sensor or appliance
-//	 * @param tokens the String[] is the tokenized command
-//	 * @param auth_token for access control
-//	 */
-//	public abstract void setSenOrApp(String[] tokens, String auth_token);
 
 	/**
-	 * show the status of the sensor or appliance 
-	 * @param tokens the String[] is the tokenized command
-	 * @param authToken for access control
+	 *  show the status of the sensor or appliance
+	 * @param sensorName
+	 * @param authToken
 	 */
 	public abstract void showSensor(String sensorName, String authToken);
+
 	/**
-	 * show all the configuration of the house
+	 *  show all the configuration of the house
 	 * including all the rooms and devices and their status
-	 * @param tokens
+	 * @param appName
+	 * @param statusName
 	 * @param authToken
 	 */
 
@@ -93,17 +121,18 @@ public abstract class ServiceInterface extends Observable {
 	public abstract void showAllApplianceStatus(String appName,String authToken);
 	public abstract void showConfigHouse(String houseName, String authToken);
 	public abstract void setApplianceStatus(String appName,String statusName,String value,String authToken);
+
 	/**
-	 * show all the configuration of the room
+	 *  show all the configuration of the room
 	 * including all the  devices and their status
-	 * @param tokens
+	 * @param roomName
 	 * @param authToken
 	 */
 	public abstract void showConfigRoom(String roomName, String authToken);
+
 	/**
-	 * show all the configuration of all the houses
+	 *  show all the configuration of all the houses
 	 * including all the rooms and devices and their status
-	 * @param tokens
 	 * @param authToken
 	 */
 
@@ -125,24 +154,67 @@ public abstract class ServiceInterface extends Observable {
 	public abstract Room findRoom(String roomName,String authToken);
 
 	/**
-	 * find the sensor based on the location
-	 * @param sensorName in the form of<houseName>:<roomName>:<sensorName>
+	 *This method find a type of sensor in a room based on the room name and the type of sensor
+	 * @param roomName
+	 * @param sensorType
+	 * @param authToken
 	 * @return
 	 */
 	public abstract List<Sensor> findSensorInRoom(String roomName, String sensorType, String authToken);
+
+	/**
+	 *find the sensor based on the location
+	 * @param sensorName
+	 * @param authToken
+	 * @return
+	 */
 	public abstract Sensor findSensor(String sensorName,String authToken);
+
+	/**
+	 * This method find a type of sensor in a house based on the house name and the type of sensor
+	 * @param houseName
+	 * @param sensorType
+	 * @param authToken
+	 * @return
+	 */
 	public abstract List<Sensor> findSensorInHouse(String houseName, String sensorType, String authToken);
 	/**
-	 * find the sensor based on the location
+	 * find the appliance based on the location
 	 * @param applianceName in the form of <houseName>:<roomName>:<applianceName>
 	 * @return
 	 */
-	public abstract Appliance findAppliance(String applianceName,String authToekn);
+	public abstract Appliance findAppliance(String applianceName,String authToken);
+
+	/**
+	 * This method find a type of appliance based on the room name and the type of appliance
+	 * @param location
+	 * @param type
+	 * @param authToken
+	 * @return
+	 */
 	public abstract List<Appliance> findApplianceByType(String location, String type, String authToken);
+	public abstract HashMap<String, Occupant> getAllOccupantMap();
+
+	/**
+	 *This method find a type of appliance based on the house name location and the type of appliance
+	 * @param houseName
+	 * @param applianceType
+	 * @param authToken
+	 * @return
+	 */
+	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);
+
+}
+
+
+
+//	public abstract HashMap<String, House> getHomeMap();
 //	public abstract void openDoors(List<Appliance> list);
 //	public abstract void turnOnAllLights(List<Appliance> list);
 //	public abstract void turnOffAllLights(List<Appliance> list);
 //	public abstract void dimmerAllLights(List<Appliance> list);
 //	public abstract void coolerThermostat(List<Appliance> list);
-//	public abstract void warmerThermostat(List<Appliance> list);
-}
+//	public abstract void warmerThermostat(List<Appliance> list);//	public abstract void turnOnLightsInHouse(String houseName,String authToken);
+//	public abstract void allAvaInHouseSpeak(String houseName,String broadCastMessage,String authToken);
+//	public abstract void avaInRoomSpeak(String avaLocation,String broadCastMessage,String authToken);
+//	public abstract List<Appliance> findApplianceInHouse(String houseName, String applianceType, String authToken);

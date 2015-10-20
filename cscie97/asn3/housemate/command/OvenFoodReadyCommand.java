@@ -6,9 +6,9 @@ import cscie97.asn3.housemate.model.IOTDevices.Ava;
 import cscie97.asn3.housemate.model.IOTDevices.Oven;
 import cscie97.asn3.housemate.model.IOTDevices.Sensor;
 import cscie97.asn3.housemate.component.ServiceInterface;
-
 /**
- * Created by ying on 10/19/15.
+ * the command for food is ready
+ * @author ying
  */
 public class OvenFoodReadyCommand implements Command {
     Appliance theAppliance;

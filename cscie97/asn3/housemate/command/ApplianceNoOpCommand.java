@@ -3,7 +3,9 @@ package cscie97.asn3.housemate.command;
 import cscie97.asn3.housemate.model.IOTDevices.Appliance;
 
 /**
- * Created by ying on 10/19/15.
+ * when the appliance status changes but no action is performed
+ * it only show the message of status changes
+ * @author ying
  */
 public class ApplianceNoOpCommand implements Command{
     Appliance theAppliance;
