@@ -1,0 +1,34 @@
+define house house1
+define house house2
+
+define occupant joe_smith type adult
+define occupant rover type adult
+
+
+define room dining_room1 floor 1 type dining_room  house house1
+define room dining_room2 floor 1 type dining_room  house house1
+
+
+define sensor ava2 type Ava room house1:kitchen1
+define sensor ava2 type Ava room house1:dining_room2
+define sensor ava2 type Ava room house1:dining_room1
+define sensor camera1 type camera room house1:dining_room1
+
+define appliance door1 type door room house1:dining_room1
+define appliance door2 type door room house1:dining_room1
+define appliance light1 type light room house1:dining_room1
+define appliance light2 type light room house1:dining_room1
+
+
+set sensor house1:dining_room1:camera1 status OCCUPANT_DETECTED value joe_smith
+set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'where is joe_smith'"
+set sensor house1:dining_room1:camera1 status OCCUPANT_DETECTED value joe_smith
+
+
+set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'where is joe_smith'"
+
+set sensor house1:dining_room1:camera1 status OCCUPANT_LEAVING value joe_smith  
+set sensor house1:dining_room1:camera1 status OCCUPANT_ACTIVE value joe_smith
+set sensor house1:dining_room1:ava2 status LISTENING value "rover says: 'joe_smith is ?'"
+set sensor house1:dining_room1:camera1 status OCCUPANT_INACTIVE value joe_smith
+set sensor house1:dining_room1:camera1 status OCCUPANT_DETECTED value joe_smith

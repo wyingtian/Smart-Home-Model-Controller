@@ -1,0 +1,38 @@
+ying_HMCS folder contains the following files:
+
+1. DesignDoc folder has the design document, sequence diagram, use case, class diagram.
+
+2. ResultReport are pdf files with  test results,exceptional handling and report document.
+
+3. source code is under src folder
+
+4. all the txt files in src folder are test input files they should be added when run the program:
+		1.AvaTestCase.txt
+		2.AvaLightsException.txt
+		3.AvaDoorException.txt
+		4.CameraTest.txt
+		5.SmokeDetectorTestCase.txt
+		6.OvenTestCase.txt
+		7.BeerCountTestCase.txt
+		8.housesetup.txt
+		9.housesetup2.txt
+
+
+To use the program, 
+
+cd to src folder first and then:
+
+To compile:
+
+javac ./cscie97/asn3/housemate/controller/*.java cscie97/asn3/housemate/test/*.java cscie97/asn3/housemate/model/*.java cscie97/asn3/knowledge/engine/*.java
+
+
+To Run: ( filename argument input can be any of txt file listed above )
+
+ java -cp . cscie97.asn3.housemate.test.TestDriver CameraTest.txt
+ 
+ 
+
+Note: There are testing KG in the TestDriver to test location and status of occupant.
+But if there are no camera detection commands in the txt file, the result shows null.
+

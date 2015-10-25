@@ -1,0 +1,12 @@
+define house house1
+
+define room dining_room1 floor 1 type dining_room house house1
+define appliance refrigerator1 type refrigerator room house1:dining_room1
+
+
+
+set appliance house1:dining_room1:refrigerator1 status beercount value 3
+
+
+
+set appliance house1:dining_room1:refrigerator1 status beercount value 3

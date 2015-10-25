@@ -1,0 +1,9 @@
+define house house1
+define occupant joe_smith type adult
+define room kitchen1 floor 1 type kitchen house house1
+define appliance oven1 type oven room house1:kitchen1
+
+show appliance house1:kitchen1:oven1 status power
+show appliance house1:kitchen1:oven1 status power 
+set appliance house1:kitchen1:oven1 status timetocook value 0
+show appliance house1:kitchen1:oven1 status power
